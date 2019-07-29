@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="reboard">
+	<select id="reboardTotalCount" resultType="int">
+		select count(*) from reboard
+	</select>
+	
+	<insert id="reboardInsert" parameterType="bdto">
+		insert into reboard (
+			user_info_nickname, 
+			user_info_email, 
+			restaurant_rest_pk, 
+			reboard_subject, 
+			reboard_content, 
+			reboard_rating,
+			readcount, 
+			groupno, 
+			restep, 
+			relevel, 
+			reboard_ref, 
+			reboard_happy, 
+			reboard_unhappy,
+			reboard_writedate
+			)
+			VALUES(
+			#{user_info_nickname}, 
+			#{user_info_email}, 
+			#{restaurant_rest_pk},
+			#{reboard_subject}, 
+			#{reboard_content}, 
+			#{reboard_rating},
+			#{readcount}, 
+			#{groupno}, 
+			#{restep}, 
+			#{relevel}, 
+			#{reboard_ref}, 
+			#{reboard_happy}, 
+			#{reboard_unhappy},
+			now())
+	</insert>
+	
+	<select id="reboardPagingList" parameterType="HashMap" resultType="bdto">
+		select * from reboard order by reboard_pk desc limit #{offset},#{block}
+	</select>
+	
+	<update id="reboardUpdateReadcount" parameterType="int">
+		update reboard set readcount=readcount+1 where reboard_pk=#{reboard_pk}
+	</update>
+	
+	<select id="reboardSelectData" parameterType="int" resultType="bdto">
+		select * from reboard where reboard_pk=#{reboard_pk}
+	</select>
+	
+	<update id="reboardUpdate" parameterType="bdto">
+		update reboard set user_info_nickname=#{user_info_nickname},
+		user_info_email=#{user_info_email},
+		reboard_rating=#{reboard_rating},
+		reboard_subject=#{reboard_subject},
+		reboard_content=#{reboard_content},
+		reboard_writedate=now()
+		where reboard_pk=#{reboard_pk}
+	</update>
+	
+	<delete id="reboardDelete" parameterType="int">
+		delete from reboard where reboard_pk=#{reboard_pk}
+	</delete>
+	
+	<update id="reboardHappyUpdate" parameterType="int">
+		update reboard set reboard_happy=reboard_happy+1 where reboard_pk=#{reboard_pk}
+	</update>
+	
+	<select id="reboardHappySelect" parameterType="int" resultType="int">
+		select reboard_happy from reboard where reboard_pk=#{reboard_pk}
+	</select>
+</mapper>
