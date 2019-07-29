@@ -1,0 +1,141 @@
+@CHARSET "UTF-8";
+
+    div.Layout{
+		border: 0px solid black;	
+		position: relative;
+		
+		
+	} 
+
+    #Top{
+		width: 100%;
+		text-align: center;
+		height: 100px;
+		border: 1px solid black;
+	}
+	
+	#Topmenu{
+		width: 100%;
+		height: 75px;
+		/* z-index: 1; */
+		text-align: center;
+		border: 1px solid black;
+	}
+		
+	#Bottom{
+	    width: 100%;
+		/* margin: auto; */
+		/* width: 100%; */
+		height: 75px;
+		text-align: center;
+		/* top: -360px; */
+		
+		
+	}
+	
+	#ClientTop2{
+		width: 1100px;
+		/* margin: auto; */		
+		height: 120px;
+		background-color: #f8f8f8;
+		left: 50%;
+		margin-left: -550px;	
+	}
+	
+	#ClientTop3{
+		width: 1100px;
+		/* margin: auto; */			
+		height: 100px;
+		border: 1px solid black;
+		left: 50%;
+		margin-left: -550px;
+		text-decoration: none;
+	}
+	
+	/* #ClientLeftmenu{
+	    width: 200px;
+		margin: auto;
+		width: 250px;
+		height: 400px;
+		z-index: 1;
+		top: 40px;		
+		left: 115px;
+		left: 50%;
+		margin-left: -550px;
+		display: inline-block;
+	}
+		
+	#ClientMain{
+		left: 315px;
+		margin: auto;
+		width: 900px; 
+		min-height: 700px;
+		height: auto;		
+		top: -365px;
+		left: 50%;
+		top: -40px;
+		margin-left: -340px;
+		display: inline-block;
+	} */
+	
+	.MainLayout{
+	  display: flex;
+	  flex-direction: row;	 
+	  width: 1100px;
+	  min-height: 700px;
+	  padding-top : 40px;
+	  margin: auto;
+	  
+	 
+	}
+	
+	 #ClientMain{
+       border-right:0px solid gray;
+       width: 850px;
+     }
+        
+     #ClientLeftmenu{
+        border-left:0px solid gray; 
+        width: 250px;
+	 }
+	
+	
+	
+	
+	#Top_2 d{	   
+	   font-size: 24px;
+	   display: inline-block;
+	   padding-bottom: 40px;
+	   
+	}
+	
+	#Top_2 a{
+	 text-decoration: none;
+	 color: black;
+	}
+	
+	#Top_2 td.Top2Image{
+	   padding-bottom: 40px;
+	}
+	
+	#ClientTop3 ul li{
+				
+		text-align: left;
+		margin-left: 40px;
+		display: inline-block;
+		margin-top: 15px;
+		
+	}
+	
+	div#Top3Detail{
+	    font-size: 24px;
+	    width : 320px;
+	} 
+	
+	li.Top3TextList{
+	  padding-left: 70px;
+	}
+	
+	
+	
+	

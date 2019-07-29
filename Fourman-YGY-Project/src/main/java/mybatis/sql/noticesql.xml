@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="notice">
+
+	<select id="noticeTotalCount" resultType="int">
+		select count(*) from notice_board
+	</select>
+	
+	<insert id="noticeInsert" parameterType="ndto">
+	    insert into notice_board (notice_writer, notice_subject, notice_content, notice_readcount, notice_writedate) values (#{notice_writer}, #{notice_subject}, #{notice_content}, #{notice_readcount}, now())
+	</insert>
+	
+</mapper>

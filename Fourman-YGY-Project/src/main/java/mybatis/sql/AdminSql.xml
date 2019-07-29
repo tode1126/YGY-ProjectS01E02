@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="admin">
+	<select id="adminCheck" resultType="int" parameterType="String">
+		select count(*) from user_info where grade = 3 and email= #{email}
+	</select>
+
+	<select id="allUserList" resultType="userDto" parameterType="map">
+		select user.* from user_info user where state !=2 order by regday desc limit #{perPage} offset #{no}
+	</select>
+	<select id="leaveUserList" resultType="userDto" parameterType="map">
+		select user.* from user_info user where state =2 order by dropday desc limit #{perPage} offset #{no}
+	</select>
+	<select id="allFoodUserList" resultType="userDto" parameterType="map">
+		select user.* from user_info user where state !=2 and grade = 2 order by regday desc limit #{perPage} offset #{no}
+	</select>
+	<select id="leaveFoodUserList" resultType="userDto" parameterType="map">
+		select user.* from user_info user where state = 2 and grade = 2 order by dropday desc limit #{perPage} offset #{no}
+	</select>
+	<select id="adminList" resultType="userDto" parameterType="map">
+		select user.* from user_info user where grade=3 order by regday desc limit #{perPage} offset #{no}
+	</select>
+	<select id="mailGetList" resultType="userDto" parameterType="int">
+		select email from user_info where grade = #{target} and state = 1 order by regday desc
+	</select>
+
+	<select id="searchUser" parameterType="userSearchDto" resultType="userDto">
+		select user.* from user_info user where state != 2 and email Like concat(#{targetEmail},'%') order by regday desc limit #{perPage} offset #{no}
+	</select>
+	<select id="searchLeaveUser" parameterType="userSearchDto" resultType="userDto">
+		select user.* from user_info user where state = 2 and email Like concat(#{targetEmail},'%') order by regday desc limit #{perPage} offset #{no}
+	</select>
+	<select id="searchFoodUser" parameterType="userSearchDto" resultType="userDto">
+		select user.* from user_info user where state != 2 and grade = 2 and email Like concat(#{targetEmail},'%') order by regday desc limit #{perPage} offset #{no}
+	</select>
+	<select id="searchLeaveFoodUser" parameterType="userSearchDto" resultType="userDto">
+		select user.* from user_info user where state = 2 and grade = 2 and email Like concat(#{targetEmail},'%') order by regday desc limit #{perPage} offset #{no}
+	</select>
+
+	<select id="allUserTotalCount" resultType="int">
+		select count(*) from user_info where state != 2
+	</select>
+	<select id="leaveUserTotalCount" resultType="int">
+		select count(*) from user_info where state = 2
+	</select>
+	<select id="allFoodUserTotalCount" resultType="int">
+		select count(*) from user_info where state != 2 and grade = 2
+	</select>
+	<select id="leaveFoodUserTotalCount" resultType="int">
+		select count(*) from user_info where state = 2 and grade = 2
+	</select>
+	<select id="adminListTotalCount" resultType="int">
+		select count(*) from user_info where grade = 3
+	</select>
+
+	<select id="searchUserCount" parameterType="String" resultType="int">
+		select count(*) from user_info user where state != 2 and email Like concat(#{targetEmail},'%')
+	</select>
+	<select id="searchLeaveUserCount" parameterType="String" resultType="int">
+		select count(*) from user_info user where state = 2 and email Like concat(#{targetEmail},'%')
+	</select>
+	<select id="searchFoodUserCount" parameterType="String" resultType="int">
+		select count(*) from user_info user where state != 2 and grade = 2 email Like concat(#{targetEmail},'%')
+	</select>
+	<select id="searchLeaveFoodUserCount" parameterType="String" resultType="int">
+		select count(*) from user_info user where state = 2 and grade = 2 email Like concat(#{targetEmail},'%')
+	</select>
+	
+	<update id="userEnable" parameterType="String">
+		update user_info set state = 1,dropday=NULL where email = #{email}
+	</update>
+	<update id="userDisable" parameterType="String">
+		update user_info set state = 2,dropday=now() where email = #{email}
+	</update>
+	<update id="userUpdate" parameterType="String">
+		update user_info set grade = 1 where email = #{email}
+	</update>
+	<update id="adminUpdate" parameterType="String">
+		update user_info set grade = 3 where email = #{email}
+	</update>
+
+</mapper>

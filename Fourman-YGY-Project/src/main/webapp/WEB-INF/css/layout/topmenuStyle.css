@@ -1,0 +1,23 @@
+@charset "UTF-8";
+
+div.menu{
+	position: absolute;
+	left: 50%;
+	margin-left: -590px;
+}
+
+ul.menu li{
+	list-style: none;
+	display: inline;
+	cursor: pointer;
+	padding-right: 2rem;
+}
+
+ul.menu li a{
+	text-decoration: none;
+	color: black; 
+}
+
+ul.menu li a:hover{
+	color: red; 
+}

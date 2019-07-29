@@ -1,0 +1,43 @@
+@CHARSET "UTF-8";
+
+ ul.ClientMenu li{
+        
+		list-style: none;
+		/* padding: 10px; */
+		margin-bottom: 20px;		
+		width: 180px;
+		font-size: 20px;
+		/* color: black; */
+		text-decoration: none;
+		
+	}  
+	
+	ul.ClientMenu a{
+        		
+		color: black;
+		text-decoration: none;
+		
+	} 
+	
+	/* ul.ClientMenu a.RedLine{
+        		
+		background-color: red;
+						
+	}  */
+	
+	ul.ClientMenu a.ServiceDetail{
+	
+	     font-size: 14px;
+	     color: gray;
+	
+	}
+	
+	a.MenuActive{
+	
+    background: #ac2f33;
+    border: 1px solid #ac2f33;
+
+    
+}
+	
+	 
