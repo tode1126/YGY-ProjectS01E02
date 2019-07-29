@@ -60,9 +60,9 @@
 								<td align="center">${dto.rest_end }</td>
 								<td align="center">
 								<select class="state" rest_pk="${dto.rest_pk }" pageNum="${currentPage }">
-									<option <c:if test="${dto.rest_state eq 0 }">selected</c:if> value="0">정상</option>
-									<option <c:if test="${dto.rest_state eq 1 }">selected</c:if> value="1">휴무</option>
-									<option <c:if test="${dto.rest_state eq 2 }">selected</c:if> value="2">탈퇴</option>
+									<option <c:if test="${dto.rest_state eq '0' }">selected</c:if> value="0">휴무</option>
+									<option <c:if test="${dto.rest_state eq '1' }">selected</c:if> value="1">정상</option>
+									<option <c:if test="${dto.rest_state eq '500' }">selected</c:if> value="500">정지</option>
 								</select></td>
 								<fmt:formatDate var="date" value="${dto.rest_dropday }" pattern="yyyy년 MM월 dd일" />
 								<td align="center">${date }</td>

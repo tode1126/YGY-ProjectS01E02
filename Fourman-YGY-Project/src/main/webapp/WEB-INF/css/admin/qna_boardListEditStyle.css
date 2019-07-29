@@ -1,11 +1,11 @@
 @charset "UTF-8";
 
-div.noticeEdit {
+div.qnaEdit {
 	font-family: sans-serif;
 	font-size: 10px;
 }
 
-#notice_content {
+#qna_content {
 	width: 96%;
 	height: 300px;
 	resize: none;
@@ -15,7 +15,7 @@ div.noticeEdit {
 	cursor: pointer;
 }
 
-div.noticeEdit form {
+div.qnaEdit form {
 	background: #fff;
 	padding: 4em 4em 2em;
 	max-width: 600px;
@@ -27,7 +27,7 @@ div.noticeEdit form {
 	border-radius: 2px;
 }
 
-div.noticeEdit form h2 {
+div.qnaEdit form h2 {
 	margin: 0 0 50px 0;
 	padding: 10px;
 	text-align: center;
@@ -36,12 +36,12 @@ div.noticeEdit form h2 {
 	border-bottom: solid 1px #e5e5e5;
 }
 
-div.noticeEdit form p {
+div.qnaEdit form p {
 	margin: 0 0 3em 0;
 	position: relative;
 }
 
-div.noticeEdit form input {
+div.qnaEdit form input {
 	display: block;
 	box-sizing: border-box;
 	width: 97%;
@@ -49,7 +49,7 @@ div.noticeEdit form input {
 	margin: 0;
 }
 
-div.noticeContent {
+div.qna_content {
 	display: block;
 	box-sizing: border-box;
 	width: 97%;
@@ -64,7 +64,7 @@ div.noticeContent {
 	overflow-y: scroll;
 }
 
-div.noticeEdit form input[type="text"] {
+div.qnaEdit form input[type="text"] {
 	background: #fff;
 	border: 1px solid #dbdbdb;
 	font-size: 1.6em;
@@ -72,11 +72,11 @@ div.noticeEdit form input[type="text"] {
 	border-radius: 2px;
 }
 
-div.noticeEdit form input[type="text"]:focus {
+div.qnaEdit form input[type="text"]:focus {
 	background: #fff;
 }
 
-div.noticeEdit form input[type="submit"] {
+div.qnaEdit form input[type="submit"] {
 	background: #4eb8dd;
 	box-shadow: 0 3px 0 0 #ddf1fa;
 	border-radius: 2px;
@@ -92,12 +92,12 @@ div.noticeEdit form input[type="submit"] {
 	text-shadow: 0 1px #ddf1fa;
 }
 
-div.noticeEdit form input[type="submit"]:hover {
+div.qnaEdit form input[type="submit"]:hover {
 	background: #ddf1fa;
 	text-shadow: 0 1px 3px rgba(70, 93, 41, 0.7);
 }
 
-div.noticeEdit form input[type="button"] {
+div.qnaEdit form input[type="button"] {
 	background: #4eb8dd;
 	box-shadow: 0 3px 0 0 #ddf1fa;
 	border-radius: 2px;
@@ -113,12 +113,12 @@ div.noticeEdit form input[type="button"] {
 	text-shadow: 0 1px #ddf1fa;
 }
 
-div.noticeEdit form input[type="button"]:hover {
+div.qnaEdit form input[type="button"]:hover {
 	background: #ddf1fa;
 	text-shadow: 0 1px 3px rgba(70, 93, 41, 0.7);
 }
 
-div.noticeEdit form label {
+div.qnaEdit form label {
 	position: absolute;
 	left: 8px;
 	top: 12px;
@@ -134,7 +134,7 @@ div.noticeEdit form label {
 	transition: color 0.3s, top 0.3s, background-color 0.8s;
 }
 
-div.noticeEdit form label.floatLabel {
+div.qnaEdit form label.floatLabel {
 	top: -11px;
 	background-color: rgba(255, 255, 255, 0.8);
 	font-size: 14px;

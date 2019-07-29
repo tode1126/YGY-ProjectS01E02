@@ -48,7 +48,7 @@ $(function(){
 
 	<dl>
 	<dt class="FAQTitle">
-		<b class="Category">배송</b>
+		<b class="Category">상품</b>
 		<a href="javascript:void(0)" class="Subject">정관장몰 배송정책 안내 입니다.</a>
 	</dt>
 	<dd class="FAQDetail">
@@ -69,7 +69,7 @@ $(function(){
 
 	<dl>
 	<dt class="FAQTitle">
-		<b class="Category">배송</b>
+		<b class="Category">상품</b>
 		<a href="javascript:void(0)" class="Subject">비회원으로도 배송조회 가능한가요?</a>
 	</dt>
 	<dd class="FAQDetail">
@@ -81,7 +81,7 @@ $(function(){
 
 	<dl>
 	<dt class="FAQTitle">
-		<b class="Category">배송</b>
+		<b class="Category">상품</b>
 		<a href="javascript:void(0)" class="Subject">문자서비스(SMS)로 배송상황을 알 수 있나요?</a>
 	</dt>
 	<dd class="FAQDetail">
@@ -107,7 +107,7 @@ $(function(){
 
 	<dl>
 	<dt class="FAQTitle">
-		<b class="Category">영수증/세금계산서/증빙서류</b>
+		<b class="Category">기타</b>
 		<a href="javascript:void(0)" class="Subject">신용카드 영수증은 어디에서 확인할 수 있나요?</a>
 	</dt>
 	<dd class="FAQDetail">

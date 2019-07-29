@@ -6,6 +6,7 @@ PUBLIC "-//mybatis.org// DTD Config 3.0//EN"
 	<typeAliases>
 		<typeAlias type="spring.data.ReboardDto" alias="bdto"/>
 		<typeAlias type="spring.data.noticeDto" alias="ndto"/>
+		<typeAlias type="spring.data.QnADto" alias="qdto"/>
 		<typeAlias type="spring.data.UserDto" alias="userDto"/>
 		<typeAlias type="spring.data.UserSearchDto" alias="userSearchDto"/>
 		<typeAlias type="spring.data.restaurant.RestaurantDto" alias="rdto"/>
@@ -17,6 +18,7 @@ PUBLIC "-//mybatis.org// DTD Config 3.0//EN"
 	<mappers>
 		<mapper resource="mybatis/sql/ReboardSql.xml"/>
 		<mapper resource="mybatis/sql/noticesql.xml"/>
+		<mapper resource="mybatis/sql/QnAsql.xml"/>
 		<mapper resource="mybatis/sql/UserSql.xml"/>
 		<mapper resource="mybatis/sql/AdminSql.xml"/>
 		<mapper resource="mybatis/sql/RestaurantSql.xml"/>

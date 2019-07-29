@@ -218,13 +218,18 @@ public class AdminDao extends SqlSessionDaoSupport {
 		return;
 	}
 	
+	public void notice_boardListReadCountUpdate(int notice_pk) {
+		getSqlSession().update("admin.notice_boardListReadCountUpdate", notice_pk);
+		return;
+	}
+	
 	//반환 리스트 qna dto 타입 
-	public void qna_boardList(int perPage, int no) {
+	public List<QnADto> qna_boardList(int perPage, int no) {
 		Map<String, Integer>map = new HashMap<String, Integer>();
 		map.put("perPage", perPage);
 		map.put("no", no);
-		//return getSqlSession().selectList("admin.qna_boardList",map);
-		return;
+		return getSqlSession().selectList("admin.qna_boardList",map);
+
 	}
 	
 	public int qna_boardListTotalCount() {
@@ -235,25 +240,18 @@ public class AdminDao extends SqlSessionDaoSupport {
 		return getSqlSession().selectOne("admin.qna_boardListSelectCount",qna_pk);
 	}
 	
-	public int qna_boardListContentSelect(int qna_pk) {
+	public QnADto qna_boardListContentSelect(int qna_pk) {
 		return getSqlSession().selectOne("admin.qna_boardListContentSelect",qna_pk);
 	}
 	
 	//파라미터 해당 dto
-	public void qna_boardListDelete() {
-		getSqlSession().update("admin.qna_boardListDelete" );
+	public void qna_boardListReplyInsert(QnADto dto) {
+		getSqlSession().insert("admin.qna_boardListReplyInsert", dto);
 		return;
 	}
 	
-	//파라미터 해당 dto
-	public void qna_boardListReplyInsert() {
-		getSqlSession().insert("admin.qna_boardListReplyInsert");
-		return;
-	}
-	
-	//파라미터 해당 dto
-	public void qna_boardListContent(int qna_pk) {
-		getSqlSession().selectOne("admin.qna_boardListContent", qna_pk);
-		return;
+	//반환 해당 dto
+	public QnADto qna_boardListContent(int qna_pk) {
+		return getSqlSession().selectOne("admin.qna_boardListContent", qna_pk);
 	}
 }

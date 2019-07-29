@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import spring.data.AdminDao;
+import spring.data.QnADto;
 import spring.data.UserDto;
 import spring.data.UserSearchDto;
 import spring.data.noticeDto;
@@ -199,10 +200,14 @@ public class AdminService {
 		return;
 	}
 	
-	//리스트 qna bto 반환 필요
-	public void qna_boardList(int perPage, int no){
-		dao.qna_boardList(perPage, no);
+	public void notice_boardListReadCountUpdate(int notice_pk) {
+		dao.notice_boardListReadCountUpdate(notice_pk);
 		return;
+	}
+	
+	//리스트 qna bto 반환 필요
+	public List<QnADto> qna_boardList(int perPage, int no){
+		return dao.qna_boardList(perPage, no);
 	}
 	
 	public int qna_boardListTotalCount() {
@@ -213,24 +218,16 @@ public class AdminService {
 		return dao.qna_boardListSelectCount(qna_pk);
 	}
 	
-	public int qna_boardListContentSelect(int qna_pk) {
+	public QnADto qna_boardListContentSelect(int qna_pk) {
 		return dao.qna_boardListContentSelect(qna_pk);
 	}
 	
-	//파라미터 해당 dto
-	public void qna_boardListDelete() {
-		dao.qna_boardListDelete();
+	public void qna_boardListReplyInsert(QnADto dto) {
+		dao.qna_boardListReplyInsert(dto);
 		return;
 	}
-	
-	//파라미터 해당 dto
-	public void qna_boardListReplyInsert() {
-		dao.qna_boardListReplyInsert();
-		return;
-	}
-	//반환값 해당 dto
-	public void qna_boardListContent(int qna_pk) {
-		dao.qna_boardListContent(qna_pk);
-		return;
+
+	public QnADto qna_boardListContent(int qna_pk) {
+		return dao.qna_boardListContent(qna_pk);
 	}
 }

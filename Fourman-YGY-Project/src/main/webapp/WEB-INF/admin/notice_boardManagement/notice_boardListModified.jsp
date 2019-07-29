@@ -24,6 +24,9 @@
 		<div class="noticeEditLayer" >
 			<div class="noticeEdit" >
 				<form action="notice_boardListModifiedAction.do" id="insertBoardFrm" method="post" >
+					<p>
+						<img id="backImg" src="${root }/image/admin/return-to-the-past.png" onclick="history.back();" width="30">
+					</p>
 					<h2>공지 작성</h2>
 					<p>
 						<label for="notice_writer" class="floatLabel">작성자</label>

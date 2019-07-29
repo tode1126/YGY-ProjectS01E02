@@ -27,12 +27,12 @@
 			<li><a href="${root }/admin/foodManagement/allFoodList.do">식당관리</a>
 				<ul>
 					<li><a href="${root }/admin/foodManagement/allFoodList.do">전체식당</a></li>
-					<li><a href="${root }/admin/foodManagement/leaveFoodList.do">탈퇴식당</a></li>
+					<li><a href="${root }/admin/foodManagement/leaveFoodList.do">정지식당</a></li>
 				</ul>
 			</li>
 			<li><a href="#">게시판관리</a>
 				<ul>
-					<li><a href="#">이벤트관리</a></li>
+					<!-- <li><a href="#">이벤트관리</a></li> -->
 					<li><a href="${root }/admin/notice_boardManagement/notice_boardList.do">공지관리</a></li>
 					<li><a href="${root }/admin/qna_boardManagement/qna_boardList.do">QnA관리</a></li>
 					<li><a href="#">후기관리</a></li>

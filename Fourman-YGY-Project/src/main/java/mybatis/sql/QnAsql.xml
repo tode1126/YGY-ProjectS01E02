@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="question">
+
+	<!-- qna 리스트 예상으로 작성 -->
+  	<select id="qna_boardSelectList" parameterType="map" resultType="qdto">
+		select qna.qna_pk, qna.qna_writer, qna.qna_subject, qna.qna_writeday, qna_ref from qna_board qna where qna_writer = #{qna_writer} order by qna_ref desc, qna_writeday desc limit #{perPage} offset #{no}
+	</select>
+	
+	<!-- qna 사용자 문의 갯수 -->
+	<select id="qna_boardListSelectTotalCount" resultType="int" parameterType="String">
+		select count(*) from qna_board where qna_writer = #{qna_writer}
+	</select>
+	
+	<!-- qna 1개 존재유무 확인 -->
+	<select id="qna_boardListSelectCount" resultType="int" parameterType="int">
+		select count(*) from qna_board where qna_pk = #{qna_pk}
+	</select>
+	
+	<!-- qna 내용 확인 -->
+	<select id="qna_boardListSelectContent" parameterType="int" resultType="qdto">
+		select qna.* from qna_board qna where qna_pk = #{qna_pk}
+	</select>
+	
+	<insert id="qna_boardListInsert" parameterType="qdto">
+		insert into qna_board(qna_writer, qna_subject, qna_content, qna_writeday) values (#{qna_writer}, #{qna_subject}, #{qna_content}, now())
+	</insert>
+	
+</mapper>

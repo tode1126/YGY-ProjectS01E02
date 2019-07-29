@@ -105,41 +105,41 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	
 	<!-- 식당 관리 -->
 	<select id="allFoodList" resultType="rdto" parameterType="map">
-		select rest.* from restaurant rest where rest_state != 2 order by rest_regdate desc limit #{perPage} offset #{no}
+		select rest.* from restaurant rest where rest_state != 500 order by rest_regdate desc limit #{perPage} offset #{no}
 	</select>
 	<select id="leaveFoodList" resultType="rdto" parameterType="map">
-		select rest.* from restaurant rest where rest_state = 2 order by rest_dropday desc limit #{perPage} offset #{no}
+		select rest.* from restaurant rest where rest_state = 500 order by rest_dropday desc limit #{perPage} offset #{no}
 	</select>
 	
 	<select id="searchAllFoodList" resultType="rdto" parameterType="userSearchDto" >
-		select rest.* from restaurant rest where rest_state != 2 and user_info_email Like concat(#{targetEmail},'%') order by rest_regdate desc limit #{perPage} offset #{no}
+		select rest.* from restaurant rest where rest_state != 500 and user_info_email Like concat(#{targetEmail},'%') order by rest_regdate desc limit #{perPage} offset #{no}
 	</select>
 	<select id="searchLeaveFoodList" resultType="rdto" parameterType="userSearchDto" >
-		select rest.* from restaurant rest where rest_state = 2 and user_info_email Like concat(#{targetEmail},'%') order by rest_dropday desc limit #{perPage} offset #{no}
+		select rest.* from restaurant rest where rest_state = 500 and user_info_email Like concat(#{targetEmail},'%') order by rest_dropday desc limit #{perPage} offset #{no}
 	</select>
 	
 	<!-- 카운트 반환 -->
 	<select id="allFoodTotalCount" resultType="int">
-		select count(*) from restaurant where rest_state != 2
+		select count(*) from restaurant where rest_state != 500
 	</select>
 	<select id="leaveFoodTotalCount" resultType="int">
-		select count(*) from restaurant where rest_state = 2
+		select count(*) from restaurant where rest_state = 500
 	</select>
 	
 	<select id="searchAllFoodTotalCount" resultType="int" parameterType="String">
-		select count(*) from restaurant where rest_state != 2 and user_info_email Like concat(#{targetEmail},'%')
+		select count(*) from restaurant where rest_state != 500 and user_info_email Like concat(#{targetEmail},'%')
 	</select>
 	<select id="searchLeaveFoodTotalCount" resultType="int" parameterType="String">
-		select count(*) from restaurant where rest_state = 2 and user_info_email Like concat(#{targetEmail},'%')
+		select count(*) from restaurant where rest_state = 500 and user_info_email Like concat(#{targetEmail},'%')
 	</select>
 	
 	
 	<!-- 식당 상태 관리 -->
 	<update id="foodStateChange" parameterType="rdto" >
-		update restaurant set rest_state = #{rest_state},rest_dropday=NULL where rest_pk = #{rest_pk}
+		update restaurant set rest_state = #{rest_state}, rest_dropday = NULL where rest_pk = #{rest_pk}
 	</update>
 	<update id="foodLeaveChange" parameterType="rdto">
-		update restaurant set rest_state = #{rest_state},rest_dropday=now() where rest_pk = #{rest_pk} 
+		update restaurant set rest_state = #{rest_state}, rest_dropday = now() where rest_pk = #{rest_pk} 
 	</update>
 	
 	<!-- 공지 게시판 처리 -->
@@ -177,9 +177,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		update notice_board set notice_subject = #{notice_subject}, notice_content = #{notice_content} where notice_pk = #{notice_pk}
 	</update>
 	
+	<!-- 공지 조회수 증가문 -->
+	<update id="notice_boardListReadCountUpdate" parameterType="int">
+		update notice_board set notice_readcount = notice_readcount + 1 where notice_pk = #{notice_pk}
+	</update>
+	
 	<!-- qna 리스트 예상으로 작성 -->
 	<select id="qna_boardList" parameterType="map" resultType="qdto">
-		select qna.qna_pk, qna.qna_writer, qna.qna_subject, qna.qna_writeday from qna_board qna order by qna_ref desc, qna_writeday desc limit #{perPage} offset #{no}
+		select qna.qna_pk, qna.qna_writer, qna.qna_subject, qna.qna_writeday, qna.qna_ref from qna_board qna order by qna_ref desc, qna_writeday desc limit #{perPage} offset #{no}
 	</select>
 	
 	<!-- qna 총 갯수 -->
@@ -188,24 +193,19 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</select>
 	
 	<!-- qna 1개 존재유무 확인 -->
-	<select id="qna_boardListSelectCount" resultType="int" parameterType="qdto">
-		select count(*) from qna_board where pna_pk = #{qna_pk}
+	<select id="qna_boardListSelectCount" resultType="int" parameterType="int">
+		select count(*) from qna_board where qna_pk = #{qna_pk}
 	</select>
 	
 	<!-- qna 내용 확인 -->
-	<select id="qna_boardListContent" parameterType="qdto" resultType="int">
+	<select id="qna_boardListContent" parameterType="int" resultType="qdto">
 		select qna.* from qna_board qna where qna_pk = #{qna_pk}
 	</select>
 	
 	<!-- 답변을 위한 내용가져오기 -->
-	<select id="qna_boardListContentSelect" parameterType="String" resultType="int">
+	<select id="qna_boardListContentSelect" parameterType="int" resultType="int">
 		select qna.qna_content from qna_board where qna_pk = #{qna_pk}
 	</select>
-	
-	<!-- qna 삭제 -->
-	<update id="qna_boardListDelete" parameterType="qdto">
-		update qna_board set qna_state = 1 , qna_subject = #{qna_subject} where qna_pk = #{qna_pk} and qna_state = 0
-	</update>
 	
 	<!-- qna 답글추가 -->
 	<insert id="qna_boardListReplyInsert" parameterType="qdto">

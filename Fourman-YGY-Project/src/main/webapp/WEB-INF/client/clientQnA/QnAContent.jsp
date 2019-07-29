@@ -14,36 +14,29 @@
 <link rel="stylesheet" href="${root }/css/admin/notic_boardListEditStyle.css">
 </head>
 <body>
-	<c:if test="${empty sessionScope.userLoginInfo or sessionScope.userLoginInfo.user_grade ne 3}">
+	<c:if test="${empty sessionScope.userLoginInfo }">
 		<script type="text/javascript">
 			adminCheck();
 		</script>
 	</c:if>
-	<c:if test="${not empty sessionScope.userLoginInfo and sessionScope.userLoginInfo.user_grade eq '3'}">
+	<c:if test="${not empty sessionScope.userLoginInfo }">
 		<div class="noticeEditLayer" >
 			<div class="noticeEdit" >
-				<form action="notice_boardListModified.do" id="insertBoardFrm" method="post" >
 					<p>
 						<img id="backImg" src="${root }/image/admin/return-to-the-past.png" onclick="history.back();" width="30">
 					</p>
-					<h2>공지 내용</h2>
+					<h2>문의 내용</h2>
 					<p>
 						<label for="notice_writer" class="floatLabel">작성자</label>
-						<input name="notice_writer" type="text" value="공지사항 관리자" readonly="readonly">
+						<input name="notice_writer" type="text" value="${dto.qna_writer }" readonly="readonly">
 					</p>
 					<p>
 						<label for="notice_subject" class="floatLabel">제 목</label>
-						<input name="notice_subject" type="text" value="${dto.notice_subject}" readonly="readonly">
+						<input name="notice_subject" type="text" value="${dto.qna_subject}" readonly="readonly">
 					</p>
 						<div class="noticeContent">
-							${dto.notice_content }
+							${dto.qna_content }
 						</div>
-					<p>	
-						<input type="hidden" name="notice_pk" value="${dto.notice_pk }">
-						<input type="hidden" name="pageNum" value="${pageNum }"> 
-						<input type="submit" id="insertBoard" value="Notic Modified">
-					</p>
-				</form>
 			</div>
 		</div>
 	</c:if>

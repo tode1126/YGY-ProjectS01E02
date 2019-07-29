@@ -15,6 +15,7 @@ response.setStatus(HttpServletResponse.SC_OK);
 <c:set var="root" value="<%=request.getContextPath()%>"></c:set>
 <script type="text/javascript" src="${root }/js/error/errorJs.js"></script>
 <link rel="stylesheet" href="${root }/css/error/errorStyle.css"/>
+<link rel="shortcut icon" href="${root }/favicon.ico">
 </head>
 <body class="loading">
   <h1>ERROR</h1>

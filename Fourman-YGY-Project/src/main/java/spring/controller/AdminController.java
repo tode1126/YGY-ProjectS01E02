@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import spring.data.LoginDto;
+import spring.data.QnADto;
 import spring.data.UserDto;
 import spring.data.UserSearchDto;
 import spring.data.noticeDto;
@@ -45,10 +46,10 @@ public class AdminController {
 			@RequestParam(defaultValue = "1") String pageNum, @PathVariable("pageName") String pageName) {
 		HttpSession session = request.getSession();
 		LoginDto dto = (LoginDto) session.getAttribute("userLoginInfo");
-
-		if (service.adminCheck(dto.getUser_Email()) > 0 && service.userSelectCount(targetEmail) > 0)
-			service.userDisable(targetEmail);
-
+		if (dto != null) {
+			if (service.adminCheck(dto.getUser_Email()) > 0 && service.userSelectCount(targetEmail) > 0)
+				service.userDisable(targetEmail);
+		}
 		return "redirect:/admin/userManagement/" + pageName + ".do?pageNum=" + pageNum;
 	}
 
@@ -58,11 +59,12 @@ public class AdminController {
 		HttpSession session = request.getSession();
 		LoginDto dto = (LoginDto) session.getAttribute("userLoginInfo");
 		String[] targetEmails = request.getParameterValues("multipleAction");
-
-		if (service.adminCheck(dto.getUser_Email()) > 0 && targetEmails != null) {
-			for (String targetEmail : targetEmails) {
-				if (service.userSelectCount(targetEmail) > 0) {
-					service.userDisable(targetEmail);
+		if (dto != null) {
+			if (service.adminCheck(dto.getUser_Email()) > 0 && targetEmails != null) {
+				for (String targetEmail : targetEmails) {
+					if (service.userSelectCount(targetEmail) > 0) {
+						service.userDisable(targetEmail);
+					}
 				}
 			}
 		}
@@ -75,10 +77,10 @@ public class AdminController {
 			@RequestParam(defaultValue = "1") String pageNum, @PathVariable("pageName") String pageName) {
 		HttpSession session = request.getSession();
 		LoginDto dto = (LoginDto) session.getAttribute("userLoginInfo");
-
-		if (service.adminCheck(dto.getUser_Email()) > 0 && service.userSelectCount(targetEmail) > 0)
-			service.userEnable(targetEmail);
-
+		if (dto != null) {
+			if (service.adminCheck(dto.getUser_Email()) > 0 && service.userSelectCount(targetEmail) > 0)
+				service.userEnable(targetEmail);
+		}
 		return "redirect:/admin/userManagement/" + pageName + ".do?pageNum=" + pageNum;
 	}
 
@@ -88,11 +90,12 @@ public class AdminController {
 		HttpSession session = request.getSession();
 		LoginDto dto = (LoginDto) session.getAttribute("userLoginInfo");
 		String[] targetEmails = request.getParameterValues("multipleAction");
-
-		if (service.adminCheck(dto.getUser_Email()) > 0 && targetEmails != null) {
-			for (String targetEmail : targetEmails) {
-				if (service.userSelectCount(targetEmail) > 0) {
-					service.userEnable(targetEmail);
+		if (dto != null) {
+			if (service.adminCheck(dto.getUser_Email()) > 0 && targetEmails != null) {
+				for (String targetEmail : targetEmails) {
+					if (service.userSelectCount(targetEmail) > 0) {
+						service.userEnable(targetEmail);
+					}
 				}
 			}
 		}
@@ -406,10 +409,10 @@ public class AdminController {
 			@RequestParam(defaultValue = "1") String pageNum) {
 		HttpSession session = request.getSession();
 		LoginDto dto = (LoginDto) session.getAttribute("userLoginInfo");
-
-		if (service.adminCheck(dto.getUser_Email()) > 0 && service.userSelectCount(targetEmail) > 0)
-			service.adminUpdate(targetEmail);
-
+		if (dto != null) {
+			if (service.adminCheck(dto.getUser_Email()) > 0 && service.userSelectCount(targetEmail) > 0)
+				service.adminUpdate(targetEmail);
+		}
 		return "redirect:/admin/adminManagement/adminList.do?pageNum=" + pageNum;
 	}
 
@@ -419,10 +422,10 @@ public class AdminController {
 			@RequestParam(defaultValue = "1") String pageNum) {
 		HttpSession session = request.getSession();
 		LoginDto dto = (LoginDto) session.getAttribute("userLoginInfo");
-
-		if (service.adminCheck(dto.getUser_Email()) > 0 && service.userSelectCount(targetEmail) > 0)
-			service.userUpdate(targetEmail);
-
+		if (dto != null) {
+			if (service.adminCheck(dto.getUser_Email()) > 0 && service.userSelectCount(targetEmail) > 0)
+				service.userUpdate(targetEmail);
+		}
 		return "redirect:/admin/adminManagement/adminList.do?pageNum=" + pageNum;
 	}
 
@@ -438,22 +441,25 @@ public class AdminController {
 		LoginDto dto = (LoginDto) session.getAttribute("userLoginInfo");
 		String go = "redirect:/admin/mailService/allMailSend.do?sendFalse=true";
 
-		if (service.adminCheck(dto.getUser_Email()) > 0) {
-			List<UserDto> list = service.mailGetList(target);
-			for (UserDto udto : list) {
-				MimeMessage message = mailSender.createMimeMessage();
-				try {
-					MimeMessageHelper messageHelper = new MimeMessageHelper(message, true, "UTF-8");
-					messageHelper.setSubject("여기요 서비스 입니다");// 메일 제목
-					messageHelper.setText("<html><body>" + editor + "</body></html>", true);// 메일내용
-					message.setRecipients(MimeMessage.RecipientType.TO, InternetAddress.parse(udto.getEmail()));
-					mailSender.send(message);
-				} catch (Exception e) {
-					System.out.println("메일 보내기 오류:" + e.getMessage());
+		if (dto != null) {
+			if (service.adminCheck(dto.getUser_Email()) > 0) {
+				List<UserDto> list = service.mailGetList(target);
+				for (UserDto udto : list) {
+					MimeMessage message = mailSender.createMimeMessage();
+					try {
+						MimeMessageHelper messageHelper = new MimeMessageHelper(message, true, "UTF-8");
+						messageHelper.setSubject("여기요 서비스 입니다");// 메일 제목
+						messageHelper.setText("<html><body>" + editor + "</body></html>", true);// 메일내용
+						message.setRecipients(MimeMessage.RecipientType.TO, InternetAddress.parse(udto.getEmail()));
+						mailSender.send(message);
+					} catch (Exception e) {
+						System.out.println("메일 보내기 오류:" + e.getMessage());
+					}
+
 				}
 
+				go = "redirect:/admin/mailService/allMailSend.do?send=true";
 			}
-			go = "redirect:/admin/mailService/allMailSend.do?send=true";
 		}
 		return go;
 	}
@@ -880,12 +886,13 @@ public class AdminController {
 		RestaurantDto rdto = new RestaurantDto();
 		rdto.setRest_pk(rest_pk);
 		rdto.setRest_state(changeVal);
-
-		if (service.adminCheck(dto.getUser_Email()) > 0 && service.selectRestaurantCount(rest_pk) > 0) {
-			if (changeVal == 2) {
-				service.foodLeaveChange(rdto);
-			} else {
-				service.foodStateChange(rdto);
+		if (dto != null) {
+			if (service.adminCheck(dto.getUser_Email()) > 0 && service.selectRestaurantCount(rest_pk) > 0) {
+				if (changeVal == 500) {
+					service.foodLeaveChange(rdto);
+				} else {
+					service.foodStateChange(rdto);
+				}
 			}
 		}
 
@@ -1088,10 +1095,11 @@ public class AdminController {
 		HttpSession session = request.getSession();
 		LoginDto dto = (LoginDto) session.getAttribute("userLoginInfo");
 		String go = "admin.tiles";
-
-		if (service.adminCheck(dto.getUser_Email()) > 0) {
-			model.addAttribute("pageNum", pageNum);
-			go = "/admin/notice_boardManagement/notice_boardListEdit";
+		if (dto != null) {
+			if (service.adminCheck(dto.getUser_Email()) > 0) {
+				model.addAttribute("pageNum", pageNum);
+				go = "/admin/notice_boardManagement/notice_boardListEdit";
+			}
 		}
 
 		return go;
@@ -1103,53 +1111,68 @@ public class AdminController {
 		HttpSession session = request.getSession();
 		LoginDto ldto = (LoginDto) session.getAttribute("userLoginInfo");
 		String go = "admin.tiles";
-		if (service.adminCheck(ldto.getUser_Email()) > 0 && dto.getNotice_subject().length() > 0 && dto.getNotice_writer().length() > 0) {
-			service.notice_boardListEdit(dto);
-			go = "redirect:/admin/notice_boardManagement/notice_boardList.do?pageNum=" + pageNum;
+		if (ldto != null) {
+			if (service.adminCheck(ldto.getUser_Email()) > 0 && dto.getNotice_subject().length() > 0
+					&& dto.getNotice_writer().length() > 0) {
+				service.notice_boardListEdit(dto);
+				go = "redirect:/admin/notice_boardManagement/notice_boardList.do?pageNum=" + pageNum;
+			}
 		}
 
 		return go;
 	}
 
 	@RequestMapping("/admin/notice_boardManagement/notice_boardListContent.do")
-	public ModelAndView notice_boardListContent(HttpServletRequest request, @RequestParam int notice_pk, @RequestParam(defaultValue = "1") String pageNum) {
+	public ModelAndView notice_boardListContent(HttpServletRequest request, @RequestParam int notice_pk,
+			@RequestParam(defaultValue = "1") String pageNum) {
 		ModelAndView model = new ModelAndView();
 		HttpSession session = request.getSession();
 		LoginDto ldto = (LoginDto) session.getAttribute("userLoginInfo");
 		String go = "admin.tiles";
-		if(service.adminCheck(ldto.getUser_Email())>0 && service.notice_boardListSelectCount(notice_pk) > 0) {
-			noticeDto dto = service.notice_boardListSelect(notice_pk);
-			model.addObject("dto", dto);
-			go = "/admin/notice_boardManagement/notice_boardListContent";
+		if (ldto != null) {
+			if (service.adminCheck(ldto.getUser_Email()) > 0 && service.notice_boardListSelectCount(notice_pk) > 0) {
+				noticeDto dto = service.notice_boardListSelect(notice_pk);
+				service.notice_boardListReadCountUpdate(notice_pk);
+				model.addObject("dto", dto);
+				go = "/admin/notice_boardManagement/notice_boardListContent";
+			}
 		}
 		model.setViewName(go);
 		return model;
 	}
 
 	@RequestMapping("/admin/notice_boardManagement/notice_boardListModified.do")
-	public ModelAndView notice_boardListModified(HttpServletRequest request, @RequestParam int notice_pk, @RequestParam(defaultValue = "1") String pageNum) {
+	public ModelAndView notice_boardListModified(HttpServletRequest request, @RequestParam int notice_pk,
+			@RequestParam(defaultValue = "1") String pageNum) {
 		ModelAndView model = new ModelAndView();
 		HttpSession session = request.getSession();
 		LoginDto ldto = (LoginDto) session.getAttribute("userLoginInfo");
 		String go = "admin.tiles";
-		if(service.adminCheck(ldto.getUser_Email())>0 && service.notice_boardListSelectCount(notice_pk) > 0){
-			noticeDto dto = service.notice_boardListSelect(notice_pk);
-			model.addObject("dto", dto);
-			go = "/admin/notice_boardManagement/notice_boardListModified";
+		if (ldto != null) {
+			if (service.adminCheck(ldto.getUser_Email()) > 0 && service.notice_boardListSelectCount(notice_pk) > 0) {
+				noticeDto dto = service.notice_boardListSelect(notice_pk);
+				model.addObject("dto", dto);
+				go = "/admin/notice_boardManagement/notice_boardListModified";
+			}
 		}
-		
+
 		model.setViewName(go);
 		return model;
 	}
-	
+
 	@RequestMapping("/admin/notice_boardManagement/notice_boardListModifiedAction.do")
-	public String notice_boardListModifiedAction(HttpServletRequest request, @ModelAttribute noticeDto dto,@RequestParam(defaultValue = "1") String pageNum) {
+	public String notice_boardListModifiedAction(HttpServletRequest request, @ModelAttribute noticeDto dto,
+			@RequestParam(defaultValue = "1") String pageNum) {
 		HttpSession session = request.getSession();
 		LoginDto ldto = (LoginDto) session.getAttribute("userLoginInfo");
 		String go = "admin.tiles";
-		if(service.adminCheck(ldto.getUser_Email())>0 && service.notice_boardListSelectCount(dto.getNotice_pk()) > 0){
-			service.notice_boardListUpdate(dto);
-			go = "redirect:/admin/notice_boardManagement/notice_boardListContent.do?notice_pk="+dto.getNotice_pk()+"&pageNum="+pageNum;
+		if (ldto != null) {
+			if (service.adminCheck(ldto.getUser_Email()) > 0
+					&& service.notice_boardListSelectCount(dto.getNotice_pk()) > 0) {
+				service.notice_boardListUpdate(dto);
+				go = "redirect:/admin/notice_boardManagement/notice_boardListContent.do?notice_pk=" + dto.getNotice_pk()
+						+ "&pageNum=" + pageNum;
+			}
 		}
 		return go;
 	}
@@ -1160,15 +1183,17 @@ public class AdminController {
 		HttpSession session = request.getSession();
 		LoginDto ldto = (LoginDto) session.getAttribute("userLoginInfo");
 		String go = "admin.tiles";
-		if (service.adminCheck(ldto.getUser_Email()) > 0 && service.notice_boardListSelectCount(notice_pk) > 0) {
-			service.notice_boardDelete(notice_pk);
-			go = "redirect:/admin/notice_boardManagement/notice_boardList.do?pageNum=" + pageNum;
+		if (ldto != null) {
+			if (service.adminCheck(ldto.getUser_Email()) > 0 && service.notice_boardListSelectCount(notice_pk) > 0) {
+				service.notice_boardDelete(notice_pk);
+				go = "redirect:/admin/notice_boardManagement/notice_boardList.do?pageNum=" + pageNum;
+			}
 		}
 
 		return go;
 	}
-	
-	//qna 게시판
+
+	// qna 게시판
 	////////// 여기 밑부터 주석 확인
 	@RequestMapping("/admin/qna_boardManagement/qna_boardList.do")
 	public ModelAndView qna_boardList(@RequestParam(value = "pageNum", defaultValue = "1") int currentPage) {
@@ -1214,8 +1239,7 @@ public class AdminController {
 			no = totalCount - (currentPage - 1) * perPage;
 
 			// 리스트 가져오기
-			List<E> list = service.qnaList(perPage, (currentPage - 1) * perPage);
-
+			List<QnADto> list = service.qna_boardList(perPage, (currentPage - 1) * perPage);
 
 			// 가져온 리스트 model에 저장
 			model.addObject("list", list);
@@ -1231,64 +1255,58 @@ public class AdminController {
 	}
 
 	@RequestMapping("/admin/qna_boardManagement/qna_boardListContent.do")
-	public ModelAndView qna_boardListContent(HttpServletRequest request, @RequestParam int pna_pk, @RequestParam(defaultValue = "1") String pageNum) {
+	public ModelAndView qna_boardListContent(HttpServletRequest request, @RequestParam int qna_pk,
+			@RequestParam(defaultValue = "1") String pageNum) {
 		ModelAndView model = new ModelAndView();
 		HttpSession session = request.getSession();
 		LoginDto ldto = (LoginDto) session.getAttribute("userLoginInfo");
 		String go = "admin.tiles";
-		if(service.adminCheck(ldto.getUser_Email())>0 && service.qna_boardListSelectCount(pna_pk) > 0) {
-			dto = service.qna_boardListContent(pna_pk);
-			model.addObject("dto", dto);
-			go = "/admin/qna_boardManagement/qna_boardListContent";
+		if (ldto != null) {
+			if (service.adminCheck(ldto.getUser_Email()) > 0 && service.qna_boardListSelectCount(qna_pk) > 0) {
+				QnADto dto = service.qna_boardListContent(qna_pk);
+				model.addObject("dto", dto);
+				go = "/admin/qna_boardManagement/qna_boardListContent";
+			}
 		}
 		model.setViewName(go);
 		return model;
 	}
-	
+
 	@RequestMapping("/admin/qna_boardManagement/qna_boardListReplyInsert.do")
-	public String qna_boardListReplyInsert(HttpServletRequest request, Model model, @RequestParam(defaultValue = "1") String pageNum, @RequestParam int qna_pk) {
+	public String qna_boardListReplyInsert(HttpServletRequest request, Model model,
+			@RequestParam(defaultValue = "1") String pageNum, @RequestParam int ori_qna_pk) {
 		HttpSession session = request.getSession();
 		LoginDto dto = (LoginDto) session.getAttribute("userLoginInfo");
 		String go = "admin.tiles";
-
-		if (service.adminCheck(dto.getUser_Email()) > 0 && service.qna_boardListSelectCount(qna_pk) > 0 ) {
-			model.addAttribute("pageNum", pageNum);
-			model.addAttribute("ori_qna_pk", qna_pk);
-			model.addAttribute("ori_qna_content", service.qna_boardListContentSelect(qna_pk));
-			go = "/admin/qnaManagement/qna_boardListReplyInsert";
+		if (dto != null) {
+			if (service.adminCheck(dto.getUser_Email()) > 0 && service.qna_boardListSelectCount(ori_qna_pk) > 0) {
+				model.addAttribute("pageNum", pageNum);
+				model.addAttribute("ori_qna_pk", ori_qna_pk);
+				model.addAttribute("ori_qna_content", service.qna_boardListContentSelect(ori_qna_pk));
+				go = "/admin/qnaManagement/qna_boardListReplyInsert";
+			}
 		}
 
 		return go;
 	}
 
 	@RequestMapping("/admin/qna_boardManagement/qna_boardListReplyInsertAction.do")
-	public String qna_boardListReplyInsertAction(HttpServletRequest request, @RequestParam(defaultValue = "1") String pageNum, 
-			@ModelAttribute noticeDto dto, @RequestParam int ori_qna_pk) {
+	public String qna_boardListReplyInsertAction(HttpServletRequest request,
+			@RequestParam(defaultValue = "1") String pageNum, @ModelAttribute QnADto dto,
+			@RequestParam int ori_qna_pk) {
 		HttpSession session = request.getSession();
 		LoginDto ldto = (LoginDto) session.getAttribute("userLoginInfo");
 		String go = "admin.tiles";
-		if (service.adminCheck(ldto.getUser_Email()) > 0 && dto.qna_subject().length() > 0 && dto.qna_writer().length() > 0) {
-			dto.setQna_ref = ori_qna_pk;
-			service.qna_boardListReplyInsert(dto);
-			go = "redirect:/admin/qnaManagement/qna_boardList.do?pageNum=" + pageNum;
+		if (ldto != null) {
+			if (service.adminCheck(ldto.getUser_Email()) > 0 && dto.getQna_subject().length() > 0
+					&& dto.getQna_writer().length() > 0) {
+				dto.setQna_ref(ori_qna_pk);
+				service.qna_boardListReplyInsert(dto);
+				go = "redirect:/admin/qnaManagement/qna_boardList.do?pageNum=" + pageNum;
+			}
 		}
 		return go;
 	}
 
-	@RequestMapping("/admin/qna_boardManagement/qna_boardListDelete.do")
-	public String qna_boardListDelete(HttpServletRequest request, @RequestParam(defaultValue = "1") String pageNum,
-			@RequestParam int qna_pk) {
-		HttpSession session = request.getSession();
-		LoginDto ldto = (LoginDto) session.getAttribute("userLoginInfo");
-		String go = "admin.tiles";
-		if (service.adminCheck(ldto.getUser_Email()) > 0 && service.qna_boardListSelectCount(qna_pk) > 0) {
-			dto = service.qna_boardListContent(qna_pk);
-			dto.qna_subject = "관리자에 의해 삭제된 글입니다";
-			service.qna_boardListDelete(dto);
-			go = "redirect:/admin/qna_boardManagement/qna_boardList.do?pageNum=" + pageNum;
-		}
 
-		return go;
-	}
-	
 }

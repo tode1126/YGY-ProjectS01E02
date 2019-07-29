@@ -9,11 +9,9 @@ public class noticeDto {
 	private String notice_content;
 	private int notice_readcount;
 	private Timestamp notice_writedate;
-
 	public int getNotice_pk() {
 		return notice_pk;
 	}
-
 	public void setNotice_pk(int notice_pk) {
 		this.notice_pk = notice_pk;
 	}

@@ -5,32 +5,29 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 <mapper namespace="notice">
 
-	<select id="noticeTotalCount" resultType="int">
+	<!-- 공지 게시판 처리 -->
+	<select id="notice_boardTotalCount" resultType="int">
 		select count(*) from notice_board
 	</select>
 	
-	<select id="noticeSelectData" parameterType="int" resultType="ndto">
-	     select * from notice_board where notice_pk=#{notice_pk}
+	<!-- 공지 리스트 -->
+	<select id="notice_boardList" resultType="ndto" parameterType="map">
+		select notice.notice_pk, notice.notice_writer, notice.notice_subject, notice.notice_readcount, notice.notice_writedate from notice_board notice order by notice_writedate desc limit #{perPage} offset #{no}
 	</select>
 	
-	<select id="noticePagingList" parameterType="HashMap" resultType="ndto">
-		select * from notice_board order by notice_pk desc limit #{offset},#{block}
+	<!-- 공지 존재 유무 테스트 -->
+	<select id="notice_boardListSelectCount" resultType="int" parameterType="int">
+		select count(*) from notice_board where notice_pk = #{notice_pk}
 	</select>
 	
-	<update id="noticeUpdateReadcount" parameterType="int">
-		update notice_board set notice_readcount = notice_readcount+1 where notice_pk=#{notice_pk}
+	<!-- 공지 내용 가져오기 -->
+	<select id="notice_boardListSelect" resultType="ndto" parameterType="int">
+		select * from notice_board where notice_pk = #{notice_pk}
+	</select>
+
+	<!-- 공지 조회수 증가문 -->
+	<update id="notice_boardListReadCountUpdate" parameterType="int">
+		update notice_board set notice_readcount = notice_readcount + 1 where notice_pk = #{notice_pk}
 	</update>
-	
-	<insert id="noticeInsert" parameterType="ndto">
-	    insert into notice_board (notice_writer, notice_subject, notice_content, notice_readcount, notice_writedate) values (#{notice_writer}, #{notice_subject}, #{notice_content}, 0, now())
-	</insert>
-	
-	<update id="noticeUpdate" parameterType="ndto">
-		update notice_board set notice_subject = #{notice_subject}, notice_content = #{notice_content} where notice_pk = #{notice_pk}
-	</update>
-	
-	<delete id="noticeDelete" parameterType="int">
-		delete from notice_board where notice_pk = #{notice_pk}
-	</delete>
 	
 </mapper>
