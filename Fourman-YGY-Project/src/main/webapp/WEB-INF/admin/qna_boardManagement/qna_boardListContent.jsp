@@ -21,7 +21,7 @@
 	<c:if test="${not empty sessionScope.userLoginInfo and sessionScope.userLoginInfo.user_grade eq '3'}">
 		<div class="qnaEditLayer" >
 			<div class="qnaEdit" >
-				<form action="qna_boardListReplyInsert.do" id="insertBoardFrm" method="post" >
+				<form action="#" id="insertBoardFrm" method="post" >
 					<p>
 						<img id="backImg" src="${root }/image/admin/return-to-the-past.png" onclick="history.back();" width="30">
 					</p>
@@ -43,10 +43,10 @@
 							${dto.qna_content }
 						</div>
 					<p>	
-						<input type="hidden" name="qna_pk" value="${dto.qna_pk }">
+						<input type="hidden" name="ori_qna_pk" value="${dto.qna_pk }">
 						<input type="hidden" name="pageNum" value="${pageNum }"> 
 						<c:if test="${dto.qna_ref eq '0' }">
-						<input type="submit" id="insertBoard" value="QnA Reply">
+						<input type="submit" id="insertBoard" value="QnA Reply" onclick="onclick='location.href='${root}/admin/qna_boardManagement/qna_boardListReplyInsert.do?ori_qna_pk=${dto.qna_pk }&pageNum=${pageNum }'">
 						</c:if>
 					</p>
 				</form>

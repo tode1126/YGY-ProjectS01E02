@@ -1282,8 +1282,8 @@ public class AdminController {
 			if (service.adminCheck(dto.getUser_Email()) > 0 && service.qna_boardListSelectCount(ori_qna_pk) > 0) {
 				model.addAttribute("pageNum", pageNum);
 				model.addAttribute("ori_qna_pk", ori_qna_pk);
-				model.addAttribute("ori_qna_content", service.qna_boardListContentSelect(ori_qna_pk));
-				go = "/admin/qnaManagement/qna_boardListReplyInsert";
+				model.addAttribute("ori_dto", service.qna_boardListContent(ori_qna_pk));
+				go = "/admin/qna_boardManagement/qna_boardListReplyInsert";
 			}
 		}
 
@@ -1297,16 +1297,31 @@ public class AdminController {
 		HttpSession session = request.getSession();
 		LoginDto ldto = (LoginDto) session.getAttribute("userLoginInfo");
 		String go = "admin.tiles";
+		
 		if (ldto != null) {
-			if (service.adminCheck(ldto.getUser_Email()) > 0 && dto.getQna_subject().length() > 0
-					&& dto.getQna_writer().length() > 0) {
+			if (service.adminCheck(ldto.getUser_Email()) > 0) {
 				dto.setQna_ref(ori_qna_pk);
 				service.qna_boardListReplyInsert(dto);
-				go = "redirect:/admin/qnaManagement/qna_boardList.do?pageNum=" + pageNum;
+				go = "redirect:/admin/qna_boardManagement/qna_boardList.do?pageNum=" + pageNum;
 			}
 		}
 		return go;
 	}
-
+	
+	@RequestMapping("/admin/qna_boardManagement/qna_boardListReplyDelete.do")
+	public String qna_boardListReplyDelete(HttpServletRequest request, @RequestParam(defaultValue = "1") String pageNum, @RequestParam int qna_pk) {
+		HttpSession session = request.getSession();
+		LoginDto ldto = (LoginDto) session.getAttribute("userLoginInfo");
+		String go = "admin.tiles";
+		
+		if (ldto != null) {
+			if (service.adminCheck(ldto.getUser_Email()) > 0) {
+				service.qna_boardListReplyDelete(qna_pk);
+				go = "redirect:/admin/qna_boardManagement/qna_boardList.do?pageNum=" + pageNum;
+			}
+		}
+		
+		return go;
+	}
 
 }

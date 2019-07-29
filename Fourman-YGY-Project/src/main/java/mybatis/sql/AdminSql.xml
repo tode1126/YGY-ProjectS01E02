@@ -202,15 +202,14 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		select qna.* from qna_board qna where qna_pk = #{qna_pk}
 	</select>
 	
-	<!-- 답변을 위한 내용가져오기 -->
-	<select id="qna_boardListContentSelect" parameterType="int" resultType="int">
-		select qna.qna_content from qna_board where qna_pk = #{qna_pk}
-	</select>
-	
 	<!-- qna 답글추가 -->
 	<insert id="qna_boardListReplyInsert" parameterType="qdto">
 		insert into qna_board(qna_writer, qna_subject, qna_content, qna_ref, qna_writeday) values (#{qna_writer}, #{qna_subject}, #{qna_content}, #{qna_ref}, now())
 	</insert>
 	
+	<!-- qna 답변 삭제 -->
+	<delete id="qna_boardListReplyDelete" parameterType="int">
+		delete from qna_board where qna_pk = #{qna_pk} and qna_ref != 0
+	</delete>
 	
 </mapper>

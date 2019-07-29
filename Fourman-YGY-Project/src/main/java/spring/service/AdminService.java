@@ -218,10 +218,6 @@ public class AdminService {
 		return dao.qna_boardListSelectCount(qna_pk);
 	}
 	
-	public QnADto qna_boardListContentSelect(int qna_pk) {
-		return dao.qna_boardListContentSelect(qna_pk);
-	}
-	
 	public void qna_boardListReplyInsert(QnADto dto) {
 		dao.qna_boardListReplyInsert(dto);
 		return;
@@ -229,5 +225,10 @@ public class AdminService {
 
 	public QnADto qna_boardListContent(int qna_pk) {
 		return dao.qna_boardListContent(qna_pk);
+	}
+	
+	public void qna_boardListReplyDelete(int qna_pk) {
+		dao.qna_boardListReplyDelete(qna_pk);
+		return;
 	}
 }

@@ -12,7 +12,7 @@
 <script type="text/javascript" src="${root }/js/admin/adminRedirectJs.js"></script>
 <script type="text/javascript" src="${root }/js/qna/QnAWriteFormJs.js"></script>
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
-<link rel="stylesheet" href="${root }/css/admin/notic_boardListEditStyle.css">
+<link rel="stylesheet" href="${root }/css/admin/qna_boardListEditStyle.css">
 <script type="text/javascript" src="${root }/editor/js/service/HuskyEZCreator.js" charset="utf-8"></script>
 </head>
 <body>
@@ -22,8 +22,8 @@
 		</script>
 	</c:if>
 	<c:if test="${not empty sessionScope.userLoginInfo}">
-		<div class="noticeEditLayer" >
-			<div class="noticeEdit" >
+		<div class="qnaEditLayer" >
+			<div class="qnaEdit" >
 				<form action="questionWriteAction.do" id="insertBoardFrm" method="post" onsubmit="return check(this)" name="frm" >
 					<p>
 						<img id="backImg" src="${root }/image/admin/return-to-the-past.png" onclick="history.back();" width="30">
@@ -42,7 +42,7 @@
 					</p>
 					<p>	
 						<input type="hidden" name="pageNum" value="${pageNum }">
-						<input type="submit" id="insertBoard" value="Notic Edit">
+						<input type="submit" id="insertBoard" value="QnA Edit">
 					</p>
 				</form>
 			</div>

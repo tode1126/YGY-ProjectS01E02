@@ -61,6 +61,9 @@
 										<fmt:formatDate var="date" value="${dto2.qna_writeday }"
 											pattern="yyyy년 MM월 dd일 HH시 mm분" />
 										<td align="center">${date }</td>
+										<td align="center">
+											<input type="button" value="삭제" class="red button" onclick="location.href='${root}/admin/qna_boardManagement/qna_boardListReplyDelete.do?qna_pk=${dto2.qna_pk }&pageNum=${currentPage }'">
+										</td>
 									</tr>
 								</c:if>
 							</c:forEach> 

@@ -10,10 +10,9 @@
 <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
 <c:set var="root" value="<%=request.getContextPath()%>"></c:set>
 <link rel="stylesheet" href="${root }/css/admin/allUserListStyle.css">
-<link rel="stylesheet"
-	href="${root }/css/admin/notic_boardListStyle.css">
-<script type="text/javascript"
-	src="${root }/js/admin/adminRedirectJs.js"></script>
+<link rel="stylesheet" href="${root }/css/admin/notic_boardListStyle.css">
+<link rel="stylesheet" href="${root }/css/Ji_Button_Style.css">
+<script type="text/javascript" src="${root }/js/admin/adminRedirectJs.js"></script>
 </head>
 <body>
 	<c:if test="${empty sessionScope.userLoginInfo }">

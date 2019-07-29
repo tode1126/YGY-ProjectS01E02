@@ -28,21 +28,22 @@
 					<p>
 						<img id="backImg" src="${root }/image/admin/return-to-the-past.png" onclick="history.back();" width="30">
 					</p>
-					<h2>공지 작성</h2>
+					<h2>답변 작성</h2>
 					<p>
 						<label for="qna_writer" class="floatLabel">작성자</label>
-						<input name="qna_writer	" type="text" value="QnA 관리자" readonly="readonly">
+						<input name="qna_writer" type="text" value="${ori_dto.qna_writer }" readonly="readonly">
 					</p>
 					<p>
 						<label for="qna_subject" class="floatLabel">제 목</label>
-						<input name="qna_subject" type="text">
+						<input name="qna_subject" type="text" readonly="readonly" value="${ori_dto.qna_subject } 답변" >
 					</p>
 					<p>
-						<textarea name="qna_content" id="notice_content">${ori_qna_content }</textarea>
+						<textarea name="qna_content" id="qna_content"><p>문의 하신내용</p> ${ori_dto.qna_content }<p>답변</p><br/></textarea>
 					</p>
 					<p>	
+						<input type="hidden" name="ori_qna_pk" value="${ori_dto.qna_pk }">
 						<input type="hidden" name="pageNum" value="${pageNum }">
-						<input type="submit" id="insertBoard" value="QnA Edit">
+						<input type="submit" id="insertBoard" value="QnA Reply">
 					</p>
 				</form>
 			</div>

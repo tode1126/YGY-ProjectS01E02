@@ -240,9 +240,6 @@ public class AdminDao extends SqlSessionDaoSupport {
 		return getSqlSession().selectOne("admin.qna_boardListSelectCount",qna_pk);
 	}
 	
-	public QnADto qna_boardListContentSelect(int qna_pk) {
-		return getSqlSession().selectOne("admin.qna_boardListContentSelect",qna_pk);
-	}
 	
 	//파라미터 해당 dto
 	public void qna_boardListReplyInsert(QnADto dto) {
@@ -250,8 +247,12 @@ public class AdminDao extends SqlSessionDaoSupport {
 		return;
 	}
 	
-	//반환 해당 dto
 	public QnADto qna_boardListContent(int qna_pk) {
 		return getSqlSession().selectOne("admin.qna_boardListContent", qna_pk);
+	}
+	
+	public void qna_boardListReplyDelete(int qna_pk) {
+		getSqlSession().delete("admin.qna_boardListReplyDelete", qna_pk);
+		return;
 	}
 }
