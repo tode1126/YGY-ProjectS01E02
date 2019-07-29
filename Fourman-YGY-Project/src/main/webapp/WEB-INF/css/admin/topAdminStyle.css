@@ -1,0 +1,37 @@
+@charset "UTF-8";
+
+#top {
+	background: #303030;
+}
+
+.f-left {
+	width: 50%;
+	margin: 0;
+	float: left !important;
+	color: white;
+	font-weight: bold;
+	font-size: 17pt;
+}
+
+.f-right {
+	float: right !important;
+	color: #cfcfcf;
+}
+
+.f-right strong {
+	color: white;
+}
+
+.f-right a {
+	color: white;
+	text-decoration: none;
+}
+
+.f-left a {
+	text-decoration: none;
+	color: white;
+}
+
+.topText {
+	padding-top: 20px;
+}

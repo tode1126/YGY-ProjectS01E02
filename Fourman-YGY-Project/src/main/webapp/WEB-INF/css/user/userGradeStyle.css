@@ -1,0 +1,30 @@
+@charset "UTF-8";
+
+.user_area {
+	max-width: 600px;
+    margin: 150px auto 0;
+    margin-bottom: 150px;
+    padding: 20px;
+    border: 1px solid #ddd;
+    box-shadow: 0 0 1em #222;
+}
+
+.user_title{
+	text-align: center;
+}
+
+.user_title strong{
+	font-size: 17pt;
+}
+
+.user_box div {
+	margin-top: 50px;
+	width: 295px;
+	text-align: center;
+	display: inline-block;
+	border: 1px solid #ddd;
+}
+
+.user_area button{
+	margin-bottom: 15pt;
+}

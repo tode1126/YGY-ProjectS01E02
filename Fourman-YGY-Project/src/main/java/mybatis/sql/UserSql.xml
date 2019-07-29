@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="user">
+	<insert id="userInsert" parameterType="userDto">
+		insert into user_info(email,pass,hp,nickname,grade,state,regday) values(#{email},password(#{pass}),#{hp},#{nickName},#{grade},#{state},now())
+	</insert>
+	<select id="userSelectCount" parameterType="String" resultType="int">
+		select count(*) from user_info where email = #{email}
+	</select>
+	<select id="userNickCount" parameterType="String" resultType="int">
+		select count(*) from user_info where nickname = #{nickName}
+	</select>
+	<select id="userGradeCheck" parameterType="map" resultType="userDto">
+		select grade,state from user_info where email = #{email} and pass = password(#{pass})
+	</select>
+	<select id="userLoginCheck" parameterType="map" resultType="int">
+		select count(*) from user_info where email = #{email} and pass = password(#{pass})
+	</select>
+	<select id="userStateUpdate" parameterType="String">
+		update user_info set state= 1 where email = #{email} and state = 0
+	</select>
+	<update id="userMailPassSet" parameterType="map">
+		update user_info set pass= password(#{pass}) where email = #{email}
+	</update>
+	<select id="userUpdateDataGet" parameterType="String" resultType="userDto">
+		select email,hp,nickname from user_info where email = #{email}
+	</select>
+	<update id="userUpdate" parameterType="userDto">
+		update user_info set pass = password(#{pass}),hp = #{hp}, nickname = #{nickName} where email = #{email}
+	</update>
+	<update id="userLeave" parameterType="String">
+		update user_info set state = 2 , dropday = now() where email = #{email} and state = 1	
+	</update>
+</mapper>

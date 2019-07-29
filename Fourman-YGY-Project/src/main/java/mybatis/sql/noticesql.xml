@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="notice">
+
+	<select id="noticeTotalCount" resultType="int">
+		select count(*) from notice_board
+	</select>
+	
+	<select id="noticeSelectData" parameterType="int" resultType="ndto">
+	     select * from notice_board where notice_pk=#{notice_pk}
+	</select>
+	
+	<select id="noticePagingList" parameterType="HashMap" resultType="ndto">
+		select * from notice_board order by notice_pk desc limit #{offset},#{block}
+	</select>
+	
+	<update id="noticeUpdateReadcount" parameterType="int">
+		update notice_board set notice_readcount = notice_readcount+1 where notice_pk=#{notice_pk}
+	</update>
+	
+	<insert id="noticeInsert" parameterType="ndto">
+	    insert into notice_board (notice_writer, notice_subject, notice_content, notice_readcount, notice_writedate) values (#{notice_writer}, #{notice_subject}, #{notice_content}, 0, now())
+	</insert>
+	
+	<update id="noticeUpdate" parameterType="ndto">
+		update notice_board set notice_subject = #{notice_subject}, notice_content = #{notice_content} where notice_pk = #{notice_pk}
+	</update>
+	
+	<delete id="noticeDelete" parameterType="int">
+		delete from notice_board where notice_pk = #{notice_pk}
+	</delete>
+	
+</mapper>
