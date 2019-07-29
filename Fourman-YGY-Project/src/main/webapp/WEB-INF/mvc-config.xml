@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+
+	<!-- Uncomment and your base-package here: <context:component-scan base-package="org.springframework.samples.web"/> -->
+
+	<mvc:resources location="/WEB-INF/js/" mapping="/js/**" />
+	<mvc:resources location="/WEB-INF/css/" mapping="/css/**" />
+	<mvc:resources location="/WEB-INF/image/" mapping="/image/**" />
+	<mvc:resources location="/WEB-INF/json/" mapping="/json/**" />
+	<mvc:resources location="/WEB-INF/resources/favicon.ico" mapping="/favicon.ico" />
+	<mvc:resources location="/WEB-INF/resources/editor/" mapping="/editor/**" />
+
+	<context:annotation-config />
+	<context:component-scan
+		base-package="spring.*.*,spring.*" />
+	<context:component-scan
+		base-package="Client.*.*,Client.*" />
+
+	<bean id="mailSender"
+		class="org.springframework.mail.javamail.JavaMailSenderImpl">
+		<property name="host" value="smtp.gmail.com" />
+		<property name="port" value="587" />
+		<property name="username" value="jeactjs123@gmail.com" />
+		<property name="password" value="qwer1234%^&amp;*" />
+		<property name="javaMailProperties">
+			<props>
+				<prop key="mail.smtp.ssl.trust">smtp.gmail.com</prop>
+				<prop key="mail.smtp.starttls.enable">true</prop>
+				<prop key="mail.smtp.auth">true</prop>
+			</props>
+		</property>
+	</bean>
+
+	<!-- file upload setting -->
+	<bean id="multipartResolver"
+		class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+		<property name="maxUploadSize" value="8000000"></property>
+	</bean>
+
+	<mvc:annotation-driven />
+
+	<!-- <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver"> 
+		Example: a logical view name of 'showMessage' is mapped to '/WEB-INF/jsp/showMessage.jsp' 
+		<property name="prefix" value="/WEB-INF/view/"/> <property name="suffix" 
+		value=".jsp"/> </bean> -->
+
+	<!-- Tiles Resolver -->
+	<bean id="tilesConfigure"
+		class="org.springframework.web.servlet.view.tiles3.TilesConfigurer">
+		<property name="definitions">
+			<list>
+				<value>/WEB-INF/deftiles/tiles.xml</value>
+			</list>
+		</property>
+		<property name="preparerFactoryClass">
+			<value>
+				org.springframework.web.servlet.view.tiles3.SpringBeanPreparerFactory
+			</value>
+		</property>
+	</bean>
+	<bean id="viewResolver"
+		class="org.springframework.web.servlet.view.UrlBasedViewResolver">
+		<property name="viewClass">
+			<value>
+				org.springframework.web.servlet.view.tiles3.TilesView
+			</value>
+		</property>
+	</bean>
+</beans>

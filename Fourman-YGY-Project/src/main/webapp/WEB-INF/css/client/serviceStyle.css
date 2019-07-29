@@ -1,0 +1,24 @@
+@CHARSET "UTF-8";
+
+/* cilentcancle.jsp*/
+div.Cancle{
+	
+	border: 1px solid black;
+	width: 250px;
+	height: 250px;
+	display: inline-block;
+	text-align: center;
+	
+}
+
+/* cilentorder.jsp*/
+div.Order{
+	
+	border: 1px solid black;
+	width: 250px;
+	height: 250px;
+	display: inline-block;
+	text-align: center;
+	
+}
+

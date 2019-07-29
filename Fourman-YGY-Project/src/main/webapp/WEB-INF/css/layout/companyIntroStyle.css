@@ -1,0 +1,9 @@
+@CHARSET "UTF-8";
+.Company-Intro .Intro-List{
+	display: none;
+	list-style: none;
+}
+
+.Intro-List li a{
+	text-decoration: none;
+}

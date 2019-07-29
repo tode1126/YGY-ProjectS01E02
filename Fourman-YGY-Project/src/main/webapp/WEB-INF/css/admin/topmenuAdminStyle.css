@@ -1,0 +1,112 @@
+@charset "UTF-8";
+
+#topmenu {
+	background: #36D1DC; /* fallback for old browsers */
+	background: -webkit-linear-gradient(to top, #5B86E5, #36D1DC);
+	/* Chrome 10-25, Safari 5.1-6 */
+	background: linear-gradient(to top, #5B86E5, #36D1DC);
+	/* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+}
+
+.menuLayer {
+	border: none;
+	border: 0px;
+	width: 960px;
+	margin: 0 auto;
+	padding: 0px;
+	font: 67.5% "Lucida Sans Unicode", "Bitstream Vera Sans",
+		"Trebuchet Unicode MS", "Lucida Grande", Verdana, Helvetica,
+		sans-serif;
+	font-size: 14px;
+	font-weight: bold;
+}
+
+.menuLayer ul {
+	height: 50px;
+	list-style: none;
+	margin: 0;
+	text-align: center;
+	padding: 0;
+}
+
+.menuLayer ul li {
+	display: inline-block;
+}
+
+.menuLayer li {
+	float: left;
+	padding: 0px;
+	width: 160px;
+}
+
+.menuLayer li a {
+	color: white;
+	display: block;
+	font-weight: normal;
+	line-height: 50px;
+	margin: 0px;
+	padding: 0px 25px;
+	text-align: center;
+	text-decoration: none;
+}
+
+.menuLayer li a:hover, .menuLayer ul li:hover a {
+	background: blue;
+	color: #FFFFFF;
+	text-decoration: none;
+}
+
+.menuLayer li ul {
+	background: #36D1DC; /* fallback for old browsers */
+	background: -webkit-linear-gradient(to top, #5B86E5, #36D1DC);
+	/* Chrome 10-25, Safari 5.1-6 */
+	background: linear-gradient(to top, #5B86E5, #36D1DC);
+	/* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+	display: none; /* 평상시에는 드랍메뉴가 안보이게 하기 */
+	height: auto;
+	padding: 0px;
+	margin: 0px;
+	border: 0px;
+	position: absolute;
+	width: 160px;
+	z-index: 200;
+	/*top:1em;
+/*left:0;*/
+}
+
+.menuLayer li:hover ul {
+	display: block; /* 마우스 커서 올리면 드랍메뉴 보이게 하기 */
+}
+
+.menuLayer li li {
+	display: block;
+	float: none;
+	margin: 0px;
+	padding: 0px;
+	width: 160px;
+}
+
+.menuLayer li:hover li a {
+	background: none;
+}
+
+.menuLayer li ul a {
+	display: block;
+	height: 50px;
+	font-size: 12px;
+	font-style: normal;
+	margin: 0px;
+	padding: 0px 10px 0px 15px;
+	text-align: left;
+}
+
+.menuLayer li ul a:hover, .menuLayer li ul li:hover a {
+	background: blue;
+	border: 0px;
+	color: #ffffff;
+	text-decoration: none;
+}
+
+.menuLayer p {
+	clear: left;
+}

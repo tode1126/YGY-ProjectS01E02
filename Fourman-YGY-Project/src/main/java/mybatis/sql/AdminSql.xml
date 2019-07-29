@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="admin">
+	<!-- 공통 부분 -->
+	<select id="adminCheck" resultType="int" parameterType="String">
+		select count(*) from user_info where grade = 3 and email= #{email}
+	</select>
+	
+	<!-- 유저 카운트 -->
+	<select id="userSelectCount" parameterType="String" resultType="int">
+		select count(*) from user_info where email = #{email}
+	</select>
+	
+	<!-- 유저 관리 -->
+	<select id="allUserList" resultType="userDto" parameterType="map">
+		select user.* from user_info user where state !=2 order by regday desc limit #{perPage} offset #{no}
+	</select>
+	<select id="leaveUserList" resultType="userDto" parameterType="map">
+		select user.* from user_info user where state =2 order by dropday desc limit #{perPage} offset #{no}
+	</select>
+	<select id="allFoodUserList" resultType="userDto" parameterType="map">
+		select user.* from user_info user where state !=2 and grade = 2 order by regday desc limit #{perPage} offset #{no}
+	</select>
+	<select id="leaveFoodUserList" resultType="userDto" parameterType="map">
+		select user.* from user_info user where state = 2 and grade = 2 order by dropday desc limit #{perPage} offset #{no}
+	</select>
+	
+	<!-- 관리자 -->
+	<select id="adminList" resultType="userDto" parameterType="map">
+		select user.* from user_info user where grade=3 order by regday desc limit #{perPage} offset #{no}
+	</select>
+	
+	<!-- 일괄메일 전송 리스트 반환문 -->
+	<select id="mailGetList" resultType="userDto" parameterType="int">
+		select email from user_info where grade = #{target} and state = 1 order by regday desc
+	</select>
+
+	<!-- 검색기능 -->
+	<select id="searchUser" parameterType="userSearchDto" resultType="userDto">
+		select user.* from user_info user where state != 2 and email Like concat(#{targetEmail},'%') order by regday desc limit #{perPage} offset #{no}
+	</select>
+	<select id="searchLeaveUser" parameterType="userSearchDto" resultType="userDto">
+		select user.* from user_info user where state = 2 and email Like concat(#{targetEmail},'%') order by regday dropday limit #{perPage} offset #{no}
+	</select>
+	<select id="searchFoodUser" parameterType="userSearchDto" resultType="userDto">
+		select user.* from user_info user where state != 2 and grade = 2 and email Like concat(#{targetEmail},'%') order by regday desc limit #{perPage} offset #{no}
+	</select>
+	<select id="searchLeaveFoodUser" parameterType="userSearchDto" resultType="userDto">
+		select user.* from user_info user where state = 2 and grade = 2 and email Like concat(#{targetEmail},'%') order by dropday desc limit #{perPage} offset #{no}
+	</select>
+
+	<!-- 카운트 -->
+	<select id="allUserTotalCount" resultType="int">
+		select count(*) from user_info where state != 2
+	</select>
+	<select id="leaveUserTotalCount" resultType="int">
+		select count(*) from user_info where state = 2
+	</select>
+	<select id="allFoodUserTotalCount" resultType="int">
+		select count(*) from user_info where state != 2 and grade = 2
+	</select>
+	<select id="leaveFoodUserTotalCount" resultType="int">
+		select count(*) from user_info where state = 2 and grade = 2
+	</select>
+	<select id="adminListTotalCount" resultType="int">
+		select count(*) from user_info where grade = 3
+	</select>
+
+	<select id="searchUserTotalCount" parameterType="String" resultType="int">
+		select count(*) from user_info user where state != 2 and email Like concat(#{targetEmail},'%')
+	</select>
+	<select id="searchLeaveUserTotalCount" parameterType="String" resultType="int">
+		select count(*) from user_info user where state = 2 and email Like concat(#{targetEmail},'%')
+	</select>
+	<select id="searchFoodUserTotalCount" parameterType="String" resultType="int">
+		select count(*) from user_info user where state != 2 and grade = 2 and email Like concat(#{targetEmail},'%')
+	</select>
+	<select id="searchLeaveFoodUserTotalCount" parameterType="String" resultType="int">
+		select count(*) from user_info user where state = 2 and grade = 2 and email Like concat(#{targetEmail},'%')
+	</select>
+	
+	
+	<!-- 유저 상태 관리 -->
+	<update id="userEnable" parameterType="String">
+		update user_info set state = 1,dropday=NULL where email = #{email}
+	</update>
+	<update id="userDisable" parameterType="String">
+		update user_info set state = 2,dropday=now() where email = #{email}
+	</update>
+	
+	<!-- 관리자 권한 -->
+	<update id="userUpdate" parameterType="String">
+		update user_info set grade = 1 where email = #{email}
+	</update>
+	<update id="adminUpdate" parameterType="String">
+		update user_info set grade = 3 where email = #{email}
+	</update>
+	
+	<!-- 식당 체크문  -->
+	<select id="selectRestaurantCount" parameterType="int" resultType="int">
+		select count(*) from restaurant where rest_pk = #{rest_pk}
+	</select>
+	
+	<!-- 식당 관리 -->
+	<select id="allFoodList" resultType="rdto" parameterType="map">
+		select rest.* from restaurant rest where rest_state != 2 order by rest_regdate desc limit #{perPage} offset #{no}
+	</select>
+	<select id="leaveFoodList" resultType="rdto" parameterType="map">
+		select rest.* from restaurant rest where rest_state = 2 order by rest_dropday desc limit #{perPage} offset #{no}
+	</select>
+	
+	<select id="searchAllFoodList" resultType="rdto" parameterType="userSearchDto" >
+		select rest.* from restaurant rest where rest_state != 2 and user_info_email Like concat(#{targetEmail},'%') order by rest_regdate desc limit #{perPage} offset #{no}
+	</select>
+	<select id="searchLeaveFoodList" resultType="rdto" parameterType="userSearchDto" >
+		select rest.* from restaurant rest where rest_state = 2 and user_info_email Like concat(#{targetEmail},'%') order by rest_dropday desc limit #{perPage} offset #{no}
+	</select>
+	
+	<!-- 카운트 반환 -->
+	<select id="allFoodTotalCount" resultType="int">
+		select count(*) from restaurant where rest_state != 2
+	</select>
+	<select id="leaveFoodTotalCount" resultType="int">
+		select count(*) from restaurant where rest_state = 2
+	</select>
+	
+	<select id="searchAllFoodTotalCount" resultType="int" parameterType="String">
+		select count(*) from restaurant where rest_state != 2 and user_info_email Like concat(#{targetEmail},'%')
+	</select>
+	<select id="searchLeaveFoodTotalCount" resultType="int" parameterType="String">
+		select count(*) from restaurant where rest_state = 2 and user_info_email Like concat(#{targetEmail},'%')
+	</select>
+	
+	
+	<!-- 식당 상태 관리 -->
+	<update id="foodStateChange" parameterType="rdto" >
+		update restaurant set rest_state = #{rest_state},rest_dropday=NULL where rest_pk = #{rest_pk}
+	</update>
+	<update id="foodLeaveChange" parameterType="rdto">
+		update restaurant set rest_state = #{rest_state},rest_dropday=now() where rest_pk = #{rest_pk} 
+	</update>
+	
+	<!-- 공지 게시판 처리 -->
+	<select id="notice_boardTotalCount" resultType="int">
+		select count(*) from notice_board
+	</select>
+	
+	<!-- 공지 리스트 -->
+	<select id="notice_boardList" resultType="ndto" parameterType="map">
+		select notice.* from notice_board notice order by notice_writedate desc limit #{perPage} offset #{no}
+	</select>
+	
+	<!-- 공지 추가 -->
+	<insert id="notice_boardListEdit" parameterType="ndto">
+		insert into notice_board (notice_writer, notice_subject, notice_content, notice_writedate) values (#{notice_writer}, #{notice_subject}, #{notice_content}, now())
+	</insert>
+	
+	<!-- 공지 삭제 -->
+	<delete id="notice_boardDelete" parameterType="int">
+		delete from notice_board where notice_pk = #{notice_pk}
+	</delete>
+	
+	<!-- 공지 존재 유무 테스트 -->
+	<select id="notice_boardListSelectCount" resultType="int" parameterType="int">
+		select count(*) from notice_board where notice_pk = #{notice_pk}
+	</select>
+	
+	<!-- 공지 내용 가져오기 -->
+	<select id="notice_boardListSelect" resultType="ndto" parameterType="int">
+		select * from notice_board where notice_pk = #{notice_pk}
+	</select>
+	
+	<!-- 업데이트문 -->
+	<update id="notice_boardListUpdate" parameterType="ndto">
+		update notice_board set notice_subject = #{notice_subject}, notice_content = #{notice_content} where notice_pk = #{notice_pk}
+	</update>
+	
+</mapper>
