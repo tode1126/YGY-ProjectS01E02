@@ -12,7 +12,7 @@
 <c:set var="root" value="<%=request.getContextPath()%>"></c:set>
 </head>
 <body>
-
+확인
 <c:if test="${not empty param.gaip}">
 	<script type="text/javascript">
 	gaiptrue();
