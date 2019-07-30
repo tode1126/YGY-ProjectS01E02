@@ -1470,4 +1470,5 @@ public class AdminController {
 		return "redirect:/admin/reboardManagement/reboardListSelectContent.do?reboard_pk=" + dto.getReboard_reboard_pk()
 				+ "&pageNum=" + pageNum;
 	}
+
 }

@@ -6,4 +6,32 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<select id="is_restaurant_introCountSelect" parameterType="int" resultType="int">
 		select count(*) from restaurant_intro where restaurant_rest_pk = #{restaurant_rest_pk}
 	</select>
+	<select id="restaurant_introOneSelect" parameterType="int" resultType="ridto">
+		select * from restaurant_intro where restaurant_rest_pk = #{restaurant_rest_pk}
+	</select>
+	<insert id="restaurant_introInsert" parameterType="ridto">
+		insert into restaurant_intro (restaurant_rest_pk, intro_text) values (#{restaurant_rest_pk}, #{intro_text})
+	</insert>
+	<insert id="restaurant_intro_imageInsert" parameterType="riimgdto">
+		insert into restaurant_intro_image 
+			(restaurant_rest_pk, restaurant_intro_image, restaurant_intro_image_realpath, 
+			restaurant_intro_image_size, restaurant_intro_image_realname, restaurant_intro_priority) 
+			values (#{restaurant_rest_pk}, #{restaurant_intro_image}, #{restaurant_intro_image_realpath}, 
+			#{restaurant_intro_image_size}, #{restaurant_intro_image_realname}, #{restaurant_intro_priority})
+	</insert>
+	<select id="is_restaurant_intro_ImageCountSelect" parameterType="int" resultType="int">
+		select count(*) from restaurant_intro_image where restaurant_rest_pk = #{restaurant_rest_pk}
+	</select>
+	<select id="restaurant_intro_imageListByRestPkSelect" parameterType="int" resultType="riimgdto">
+		select * from restaurant_intro_image where restaurant_rest_pk = #{restaurant_rest_pk} order by restaurant_intro_priority asc
+	</select>
+	<update id="restaurant_introUpdate">
+		update restaurant_intro set intro_text = #{intro_text} where restaurant_rest_pk = #{restaurant_rest_pk}
+	</update>
+	<select id="restaurant_intro_imageMaxPrioritySelect" parameterType="int" resultType="int">
+		select max(restaurant_intro_priority) from restaurant_intro_image where restaurant_rest_pk = #{restaurant_rest_pk}
+	</select>
+	<delete id="restaurant_intro_imageDelete" parameterType="int">
+		delete from restaurant_intro_image where restaurant_intro_image_pk = #{restaurant_intro_image_pk}	
+	</delete>
 </mapper>

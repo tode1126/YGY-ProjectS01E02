@@ -33,5 +33,4 @@ public class noticeDao extends SqlSessionDaoSupport {
 	public noticeDto notice_boardListSelect(int notice_pk) {
 		return getSqlSession().selectOne("notice.notice_boardListSelect", notice_pk);
 	}
-
 }

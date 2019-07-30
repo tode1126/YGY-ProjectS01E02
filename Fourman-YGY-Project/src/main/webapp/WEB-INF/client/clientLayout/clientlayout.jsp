@@ -14,48 +14,33 @@
 <link rel="shortcut icon" href="${root }/favicon.ico">
 </head>
 <body>
-<!-- 고정 메인화면  -->
-<div id="Top" class="Layout">
-	<tiles:insertAttribute name="top" />
-</div>
-<div id="Topmenu" class="Layout">
-	<tiles:insertAttribute name="topmenu" />
-</div>
-
-<!-- 고객센터  메인화면  -->
-<div id="ClientTop2" class="Layout">
-   <tiles:insertAttribute name="top2"/>
-</div>
-<div id="ClientTop3" class="Layout">
-   <tiles:insertAttribute name="top3"/>
-</div>
-
-<div class="MainLayout">
-
-<div id="ClientLeftmenu" class="Layout MainLeft">
-	<tiles:insertAttribute name="leftmenu"/>
-</div>
-
-<div id="ClientMain" class="Layout Mainright">
-	<tiles:insertAttribute name="clientMain"/>
-</div>
-
-</div>
-
-
-
-<div id="Bottom" class="Layout">
-	<tiles:insertAttribute name="bottom" />
-</div>
-
+	<!-- 고정 메인화면  -->
+	<div id="Top" class="Layout">
+		<tiles:insertAttribute name="top" />
+	</div>
+	<div id="Topmenu" class="Layout">
+		<tiles:insertAttribute name="topmenu" />
+	</div>
+	
+	<!-- 고객센터  메인화면  -->
+	<div id="ClientTop2" class="Layout">
+	   <tiles:insertAttribute name="top2"/>
+	</div>
+	<div id="ClientTop3" class="Layout">
+	   <tiles:insertAttribute name="top3"/>
+	</div>
+	
+	<div class="MainLayout">
+		<div id="ClientLeftmenu" class="Layout MainLeft">
+			<tiles:insertAttribute name="leftmenu"/>
+		</div>
+		<div id="ClientMain" class="Layout Mainright">
+			<tiles:insertAttribute name="clientMain"/>
+		</div>
+	</div>
+	
+	<div id="Bottom" class="Layout">
+		<tiles:insertAttribute name="bottom" />
+	</div>
 </body>
 </html>
-
-
-
-
-
-
-
-
-

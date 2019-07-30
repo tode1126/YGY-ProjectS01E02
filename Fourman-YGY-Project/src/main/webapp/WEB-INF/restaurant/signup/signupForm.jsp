@@ -50,7 +50,7 @@
 		</tr>
 		<tr>
 			<td colspan="2" align="center">
-				<input type="hidden" name="user_info_email" value="asdf@asd.com">
+				<input type="hidden" name="user_info_email" value="${email }">
 				<input type="hidden" name="rest_state" value=0>
 				<button style="width: 100px;" type="submit">
 					저장하기

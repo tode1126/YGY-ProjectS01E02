@@ -18,4 +18,7 @@ public class RestaurantDao extends SqlSessionDaoSupport {
 		List<RestaurantDto> list = getSqlSession().selectList("restaurant.restaurantListByEmailSelect", email);
 		return list;
 	}
+	public int selectNextRestaurantPk() {
+		return getSqlSession().selectOne("next_restaurant_pkSelect");
+	}
 }

@@ -17,7 +17,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<select id="restaurantListByEmailSelect" parameterType="String" resultType="rdto">
 		select * from restaurant where user_info_email = #{email}
 	</select>
-	
+	<select id="next_restaurant_pkSelect" resultType="int">
+		select auto_increment from information_schema.tables where table_schema = 'tjdrn4765' and table_name='restaurant'
+	</select>
 	<select id="is_restaurant_tableCountSelect" parameterType="int" resultType="int">
 		select count(*) from restaurant_table where restaurant_rest_pk = #{restaurant_rest_pk}
 	</select>

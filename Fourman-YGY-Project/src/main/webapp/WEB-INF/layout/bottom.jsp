@@ -7,31 +7,34 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-<script src="https://code.jquery.com/jquery-1.10.2.js"></script>
 <c:set var="root" value="<%=request.getContextPath()%>"></c:set>
 <link rel="stylesheet" href="${root }/css/layout/bottomStyle.css"/>
+<script src="https://code.jquery.com/jquery-1.10.2.js"></script>
 </head>
 <body>
 <strong>
 <div class="Footer">
-	<div class="Footer-Menu"> 
-		<ul>
-			<li>
-				<a href="${root }/company/companyIntro.do">회사소개</a>
-			</li>
-			<li>
-				<a href="${root }/company/terms.do">이용약관</a>
-			</li>
-			<li>
-				<a href="${root }/company/privacy.do">개인정보처리방침</a>
-			</li>
-			<li>
-				<a href="${root }/company/notice.do">공지사항</a>
-			</li>		
-		</ul>
+	<div class="Footer-Menu-Wrap">
+		<div class="Footer-Menu">
+			<ul>
+				<li>
+					<a href="${root }/company/companyIntro.do">회사소개</a>
+				</li>
+				<li>
+					<a href="${root }/company/terms.do">이용약관</a>
+				</li>
+				<li>
+					<a href="${root }/company/privacy.do">개인정보처리방침</a>
+				</li>
+				<li>
+					<a href="${root }/company/notice.do">공지사항</a>
+				</li>		
+			</ul>
+		</div> 
 	</div>
 	<div class="Company-Wrap">
 		<div class="Company-Logo">
+			<img src="${root }/favicon.ico" class="ygy-icon">
 			<a>여기요</a>
 		</div>
 		<div class="Company-Info">
@@ -61,30 +64,32 @@
 		</div>			  	
 	</div>
 	<div class="Service-Info">
- 		<div class="Bpg">
- 			<a>
- 				<span class="Img"></span>
- 				<span class="Text">
- 					여기요
- 					<br>
- 					안심센터
- 				</span>
- 			</a>
- 		</div>
- 		<div class="CleanReview">
- 			<a>
- 				<span class="Img"></span>
- 				<span class="Text">
- 					여기요 100%
- 					<br>
- 					클린리뷰
- 				</span>
- 			</a>
- 		</div>
- 		<div class="Csc">
- 			<em>고객만족센터</em>
- 			<strong>02-3333-5555</strong>
- 			<span>24시간, 연중무휴</span>
+		<div class="Service-Info-Wrap">
+	 		<div class="Bpg">
+	 			<a>
+	 				<span class="Img"></span>
+	 				<span class="Text">
+	 					여기요
+	 					<br>
+	 					안심센터
+	 				</span>
+	 			</a>
+	 		</div>
+	 		<div class="CleanReview">
+	 			<a>
+	 				<span class="Img"></span>
+	 				<span class="Text">
+	 					여기요 100%
+	 					<br>
+	 					클린리뷰
+	 				</span>
+	 			</a>
+	 		</div>
+	 		<div class="Csc">
+	 			<em>고객만족센터</em>
+	 			<strong>02-3333-5555</strong>
+	 			<span>24시간, 연중무휴</span>
+	 		</div>
  		</div>
 	</div>
 	<div class="Guide">

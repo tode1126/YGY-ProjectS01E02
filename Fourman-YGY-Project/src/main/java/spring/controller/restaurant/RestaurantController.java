@@ -19,8 +19,11 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import spring.data.LoginDto;
+import spring.data.restaurant.RestaurantAuthorityDto;
 import spring.data.restaurant.RestaurantDto;
 import spring.data.restaurant.RestaurantMenuDto;
+import spring.data.restaurant.RestaurantTableDbDao;
+import spring.data.restaurant.RestaurantTableDbDto;
 import spring.service.restaurant.RestaurantService;
 import upload.util.SpringFileWriter;
 
@@ -37,16 +40,33 @@ public class RestaurantController {
 	}
 	
 	@RequestMapping("/restaurant/signupForm.do")
-	public String frontPage()
+	public ModelAndView frontPage(HttpServletRequest request)
 	{
-		return "/restaurant/signup/signupForm";
+		ModelAndView model = new ModelAndView();
+		HttpSession session = request.getSession();
+		String email = "";
+		boolean isLoginDto = (session.getAttribute("userLoginInfo")!=null) ? true : false;
+		System.out.println(isLoginDto);
+		if(isLoginDto) {
+			LoginDto ldto = (LoginDto) session.getAttribute("userLoginInfo");
+			email = ldto.getUser_Email();
+		}
+		model.addObject("email", email);
+		model.setViewName("/restaurant/signup/signupForm");
+		return model;
 	}
 	
 	@RequestMapping(value="/restaurant/signup.do", method=RequestMethod.POST)
-	public String write(@ModelAttribute RestaurantDto dto) {
+	public String write(@ModelAttribute RestaurantDto dto, HttpServletRequest request) {
 		service.insertRestaurant(dto);
-		//목록으로 이동
-		return "redirect:/restaurant/main.do";
+		//권한 설정페이지로 이동
+		HttpSession session = request.getSession();
+		boolean isRest_pk = (session.getAttribute("rest_pk")!=null) ? true : false;
+		if(isRest_pk)
+			session.removeAttribute("rest_pk");
+		int rest_pk = service.selectNextRestaurantPk();
+		session.setAttribute("rest_pk", rest_pk-1);
+		return "redirect:/restaurant/authorityCheck.do";
 	}
 	
 	@RequestMapping("/restaurant/chooseAccount.do")
@@ -156,7 +176,7 @@ public class RestaurantController {
 		// 해당 디렉토리가 없을경우 디렉토리를 생성합니다.
 		if (!Folder.exists()) {
 			try{
-			    Folder.mkdir(); //폴더 생성합니다.
+			    Folder.mkdirs(); //폴더 생성합니다.
 			    System.out.println("폴더가 생성되었습니다.");
 	        } catch(Exception e) {
 	        	e.getStackTrace();
@@ -333,6 +353,71 @@ public class RestaurantController {
 		return "redirect:/restaurant/menuFront.do";
 	}
 	
+	/*** 식당 권한 테이블 설정*/
+	@RequestMapping("/restaurant/authorityCheck.do")
+	public String authorityConfigCheck(HttpServletRequest request)
+	{
+		HttpSession session = request.getSession();
+		String go = "";
+		int restaurant_rest_pk = -1;
+		boolean isRest_pk = (session.getAttribute("rest_pk")!=null) ? true : false;
+		if(isRest_pk) {
+			restaurant_rest_pk = (Integer) session.getAttribute("rest_pk");
+			System.out.println("authorityForm.do: "+restaurant_rest_pk);
+		}
+		int isRestaurantAuthority = service.selectIsRestaurantAuthority(restaurant_rest_pk);
+		if(isRestaurantAuthority==0) {
+			go = "redirect:/restaurant/authorityForm.do";
+		} else {
+			go = "redirect:/restaurant/authorityUpdateForm.do";
+		}
+		return go;
+	}
+	
+	@RequestMapping("/restaurant/authorityForm.do")
+	public ModelAndView authorityConfigForm(HttpServletRequest request)
+	{
+		HttpSession session = request.getSession();
+		ModelAndView model = new ModelAndView();
+		boolean isRest_pk = (session.getAttribute("rest_pk")!=null) ? true : false;
+		if(isRest_pk) {
+			int restaurant_rest_pk = (Integer) session.getAttribute("rest_pk");
+			System.out.println("authorityForm.do: "+restaurant_rest_pk);
+			model.addObject("restaurant_rest_pk", restaurant_rest_pk);
+		} 
+		model.setViewName("/restaurant/authority/authorityConfigForm");
+		return model;
+	}
+	@RequestMapping(value="/restaurant/authorityAdd.do", method=RequestMethod.POST)
+	public String authorityConfigAdd(@ModelAttribute RestaurantAuthorityDto radto) {
+		service.insertRestaurantAuthority(radto);
+		//목록으로 이동
+		return "redirect:/restaurant/restaurantMain.do?select=" + radto.getRestaurant_rest_pk();
+	}
+	
+	@RequestMapping("/restaurant/authorityUpdateForm.do")
+	public ModelAndView authorityConfigUpdateForm(HttpServletRequest request)
+	{
+		HttpSession session = request.getSession();
+		RestaurantAuthorityDto radto = null;
+		ModelAndView model = new ModelAndView();
+		boolean isRest_pk = (session.getAttribute("rest_pk")!=null) ? true : false;
+		if(isRest_pk) {
+			int restaurant_rest_pk = (Integer) session.getAttribute("rest_pk");
+			System.out.println("authorityUpdateForm.do: "+restaurant_rest_pk);
+			radto = service.selectRestaurantAuthority(restaurant_rest_pk);
+			model.addObject("radto", radto);
+		} 
+		model.setViewName("/restaurant/authority/authorityUpdateForm");
+		return model;
+	}
+	@RequestMapping(value="/restaurant/authorityUpdate.do", method=RequestMethod.POST)
+	public String authorityConfigUpdate(@ModelAttribute RestaurantAuthorityDto radto) {
+		service.updateRestaurantAuthority(radto);
+		//목록으로 이동
+		return "redirect:/restaurant/restaurantMain.do?select=" + radto.getRestaurant_rest_pk();
+	}
+	
 	/*** 테이블 관련 컨트롤러*/
 	@RequestMapping(value="/restaurant/tableFront.do")
 	public ModelAndView tableFront(HttpServletRequest request) {
@@ -344,13 +429,120 @@ public class RestaurantController {
 		if(isRest_pk) {
 			restaurant_rest_pk = (Integer) session.getAttribute("rest_pk");
 			System.out.println("tableFront.do: "+restaurant_rest_pk);
-			isRestaurantTable = service.selectIsRestaurantTable(restaurant_rest_pk);
+			isRestaurantTable = service.selectIsRestaurantTableDb(restaurant_rest_pk);
 			//System.out.println(isRestaurantTable);
 			//없으면 0, 있으면 1이 나온다
+		}
+		if(service.selectIsRestaurantTableDb(restaurant_rest_pk)>0) {
+			List<RestaurantTableDbDto> list = service.selectRestaurantTableDb(restaurant_rest_pk);
+			model.addObject("tableList", list);
 		}
 		model.addObject("isRestaurantTable", isRestaurantTable);
 		model.setViewName("/restaurant/table/tableFront");
 		return model;
+	}
+	
+	@RequestMapping(value="/restaurant/tableCheck.do")
+	public ModelAndView tableCheck(HttpServletRequest request) {
+		ModelAndView model = new ModelAndView();
+		HttpSession session = request.getSession();
+		boolean isRest_pk = (session.getAttribute("rest_pk")!=null) ? true : false;
+		int restaurant_rest_pk = -1;
+		int isRestaurantTable = -1;
+		if(isRest_pk) {
+			restaurant_rest_pk = (Integer) session.getAttribute("rest_pk");
+			System.out.println("tableCheck.do: "+restaurant_rest_pk);
+			isRestaurantTable = service.selectIsRestaurantTableDb(restaurant_rest_pk);
+			//System.out.println(isRestaurantTable);
+			//없으면 0, 있으면 1이 나온다
+		}
+		if(isRestaurantTable > 0) {
+			model.setViewName("redirect:/restaurant/tableAddForm.do");
+		} else {
+			model.setViewName("redirect:/restaurant/tableChangeForm.do");
+		}
+		return model;
+	}
+	@RequestMapping("/restaurant/tableAddForm.do")
+	public ModelAndView tableAddForm(HttpServletRequest request)
+	{
+		HttpSession session = request.getSession();
+		ModelAndView model = new ModelAndView();
+		boolean isRest_pk = (session.getAttribute("rest_pk")!=null) ? true : false;
+		if(isRest_pk) {
+			int restaurant_rest_pk = (Integer) session.getAttribute("rest_pk");
+			System.out.println("tableAddForm.do: "+restaurant_rest_pk);
+			model.addObject("restaurant_rest_pk", restaurant_rest_pk);
+		} 
+		model.setViewName("/restaurant/table/tableAddForm");
+		return model;
+	}
+	@RequestMapping(value="/restaurant/tableAdd.do", method=RequestMethod.POST)
+	public String tableAdd(HttpServletRequest request, 
+			@RequestParam(value="number-of-table", defaultValue="-1") int numberOfTable) {
+		System.out.println("tableAdd: " + numberOfTable);
+		HttpSession session = request.getSession();
+		boolean isRest_pk = (session.getAttribute("rest_pk")!=null) ? true : false;
+		int restaurant_rest_pk = 0;
+		if(isRest_pk) {
+			restaurant_rest_pk = (Integer) session.getAttribute("rest_pk");
+			System.out.println("tableAddForm.do: "+restaurant_rest_pk);
+		} 
+		int tableCnt = 0;
+		RestaurantTableDbDto rtdbdto = new RestaurantTableDbDto();
+		for (int i = 0; i < numberOfTable; i++) {
+			tableCnt++;
+			rtdbdto.setRestaurant_rest_pk(restaurant_rest_pk);
+			rtdbdto.setRestaurant_table_status("wait");
+			rtdbdto.setRestaurant_table_no(tableCnt);
+			rtdbdto.setRestaurant_table_pw("1234");
+			rtdbdto.setRestaurant_table_res("");
+			rtdbdto.setRestaurant_table_res_name("");
+			service.insertRestaurantTableDb(rtdbdto);
+		}
+		//목록으로 이동
+		return "redirect:/restaurant/restaurantMain.do?select=" + restaurant_rest_pk;
+	}
+	@RequestMapping("/restaurant/tableChangeForm.do")
+	public ModelAndView tableChangeForm(HttpServletRequest request)
+	{
+		HttpSession session = request.getSession();
+		ModelAndView model = new ModelAndView();
+		boolean isRest_pk = (session.getAttribute("rest_pk")!=null) ? true : false;
+		if(isRest_pk) {
+			int restaurant_rest_pk = (Integer) session.getAttribute("rest_pk");
+			System.out.println("tableAddForm.do: "+restaurant_rest_pk);
+			model.addObject("restaurant_rest_pk", restaurant_rest_pk);
+		} 
+		model.setViewName("/restaurant/table/tableAddForm");
+		return model;
+	}
+	@RequestMapping(value="/restaurant/tableChange.do", method=RequestMethod.POST)
+	public String tableChange(HttpServletRequest request, 
+			@RequestParam(value="number-of-table", defaultValue="-1") int numberOfTable) {
+		System.out.println("tableChange: " + numberOfTable);
+		HttpSession session = request.getSession();
+		boolean isRest_pk = (session.getAttribute("rest_pk")!=null) ? true : false;
+		int restaurant_rest_pk = 0;
+		if(isRest_pk) {
+			restaurant_rest_pk = (Integer) session.getAttribute("rest_pk");
+			System.out.println("tableAddForm.do: "+restaurant_rest_pk);
+		} 
+		service.deleteRestaurantTableDb(restaurant_rest_pk);
+		int tableCnt = 0;
+		RestaurantTableDbDto rtdbdto = new RestaurantTableDbDto();
+		for (int i = 0; i < numberOfTable; i++) {
+			tableCnt++;
+			rtdbdto.setRestaurant_rest_pk(restaurant_rest_pk);
+			rtdbdto.setRestaurant_table_status("wait");
+			rtdbdto.setRestaurant_table_no(tableCnt);
+			rtdbdto.setRestaurant_table_pw("1234");
+			rtdbdto.setRestaurant_table_res("");
+			rtdbdto.setRestaurant_table_res_name("");
+			service.insertRestaurantTableDb(rtdbdto);
+		}
+		//목록으로 이동
+		return "redirect:/restaurant/restaurantMain.do?select=" + restaurant_rest_pk;
 	}
 	
 }

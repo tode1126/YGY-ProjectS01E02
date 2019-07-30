@@ -211,5 +211,4 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<delete id="qna_boardListReplyDelete" parameterType="int">
 		delete from qna_board where qna_pk = #{qna_pk} and qna_ref != 0
 	</delete>
-	
 </mapper>

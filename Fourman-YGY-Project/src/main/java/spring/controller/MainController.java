@@ -16,7 +16,8 @@ public class MainController {
 	{
 		return "admin.tiles";//tiles name 반환
 	}
-	@RequestMapping("/restaurant/restraunt.do")
+	
+	@RequestMapping("/restaurant/restaurant.do")
 	public String restrauntGo()
 	{
 		return "restaurant.tiles";//tiles name 반환

@@ -102,5 +102,4 @@ public class RestaurantDto {
 	public void setRest_dropday(Timestamp rest_dropday) {
 		this.rest_dropday = rest_dropday;
 	}
-
 }

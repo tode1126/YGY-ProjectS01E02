@@ -11,10 +11,21 @@
 </head>
 <body>
 <c:if test="${isRestaurantTable == 0 }">
-<a>테이블 정보 추가하기</a>
+	<button type="button" onclick="location.href='./tableCheck.do'">테이블 정보 추가하기</button>
 </c:if>
+
 <c:if test="${isRestaurantTable > 0 }">
-<a>테이블 정보 수정하기</a>
+	<button type="button" onclick="location.href='./tableCheck.do'">테이블 정보 수정하기</button>
+	<br><br>
+	<div class="table-wrap">
+		<c:set var="cnt" value="0"/>
+		<c:forEach var="dto" items="${tableList }">
+			<c:set var="cnt" value="${cnt + 1 }"/>
+			<button type="button" class="table ${restaurant_table_status }">${dto.restaurant_table_no }</button>
+			<c:if test="${cnt%4==0 }"><br></c:if>
+		</c:forEach>
+		
+	</div>
 </c:if>
 </body>
 </html>

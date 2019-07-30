@@ -16,6 +16,7 @@
 	<mvc:resources location="/WEB-INF/json/" mapping="/json/**" />
 	<mvc:resources location="/WEB-INF/resources/favicon.ico" mapping="/favicon.ico" />
 	<mvc:resources location="/WEB-INF/resources/editor/" mapping="/editor/**" />
+	<mvc:resources location="/save/"  mapping="/save/**" />
 
 	<context:annotation-config />
 	<context:component-scan

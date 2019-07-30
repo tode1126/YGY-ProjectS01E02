@@ -5,19 +5,87 @@ div.menu{
 	left: 50%;
 	margin-left: -590px;
 }
-
+ul.menu{
+	margin: 0 0;
+}
 ul.menu li{
 	list-style: none;
 	display: inline;
 	cursor: pointer;
-	padding-right: 2rem;
+	/* padding-right: 2rem; */
 }
 
 ul.menu li a{
 	text-decoration: none;
 	color: black; 
+	font-size: 1.6em;
 }
 
 ul.menu li a:hover{
+	color: red; 
+}
+
+button.btn-topmenu{
+  background:#1AAB8A;
+  color:#fff;
+  border:none;
+  position:relative;
+  height:60px;
+  font-size:1.5em;
+  padding:0 1em;
+  cursor:pointer;
+  transition:800ms ease all;
+  outline:none;
+  margin-right: -10px;
+}
+button.btn-topmenu:hover{
+  background:#fff;
+  color:#1AAB8A;
+}
+button.btn-topmenu:before,
+button.btn-topmenu:after{
+  content:'';
+  position:absolute;
+  top:0;
+  right:0;
+  height:2px;
+  width:0;
+  background: #1AAB8A;
+  transition:400ms ease all;
+}
+button.btn-topmenu:after{
+  right:inherit;
+  top:inherit;
+  left:0;
+  bottom:0;
+}
+button.btn-topmenu:hover:before,button.btn-topmenu:hover:after{
+  width:100%;
+  transition:800ms ease all;
+}
+
+
+div.menu-btn-wrap{
+	position: absolute;
+	left: 50%;
+	margin-left: 240px;
+	transition: transformX(100%)
+}
+ul.menu-btn{
+	margin: 0 0;
+}
+ul.menu-btn li{
+	list-style: none;
+	display: inline;
+	cursor: pointer;
+	/* padding-right: 2rem; */
+}
+
+ul.menu-btn li a{
+	text-decoration: none;
+	color: black; 
+}
+
+ul.menu-btn li a:hover{
 	color: red; 
 }

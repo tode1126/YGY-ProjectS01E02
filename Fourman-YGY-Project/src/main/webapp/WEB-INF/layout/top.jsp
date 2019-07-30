@@ -12,11 +12,34 @@
 <link rel="stylesheet" href="${root }/css/layout/topStyle.css"/>
 </head>
 <body>
-<a style="text-decoration: none;" href="${root}/main.do">
+<c:if test="${sessionScope.userLoginInfo == null }">
+	<a style="text-decoration: none;" href="${root}/main.do">
+		<img src="${root}/image/LOGO.png" align="middle" class="logo">
+	</a>
+</c:if>
+<c:if test="${sessionScope.userLoginInfo != null }">
+	<c:if test="${sessionScope.userLoginInfo.user_grade == 1 }">
+		<a style="text-decoration: none;" href="${root}/main.do">
+			<img src="${root}/image/LOGO.png" align="middle" class="logo">
+		</a>
+	</c:if>
+	<c:if test="${sessionScope.userLoginInfo.user_grade == 2 }">
+		<a style="text-decoration: none;" href="${root}/restaurant/main.do">
+			<img src="${root}/image/LOGO.png" align="middle" class="logo">
+		</a>
+	</c:if>
+	<c:if test="${sessionScope.userLoginInfo.user_grade == 3 }">
+		<a style="text-decoration: none;" href="${root}/admin/admin.do">
+			<img src="${root}/image/LOGO.png" align="middle" class="logo">
+		</a>
+	</c:if>
+</c:if>
+
+<%-- <a style="text-decoration: none;" href="${root}/main.do">
 <img src="${root}/image/LOGO.png" align="middle" class="logo">
-</a>
+</a> --%>
 <div class="etc">
-	여기요
 </div>
+
 </body>
 </html>

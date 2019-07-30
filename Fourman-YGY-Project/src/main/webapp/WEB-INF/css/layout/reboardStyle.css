@@ -1,0 +1,79 @@
+@charset "UTF-8";
+
+.BoardWrite{
+	border: 1px solid gray;
+	height: 300px;
+	width: 400px;
+	margin-top: 100px;
+	margin-left: 200px;
+	margin-right: 250px;
+	height: 300px;
+}
+
+.QuickSrch{
+    position: relative;
+    width: 270px;
+    height: 31px;
+    padding: 0 13px;
+    border: 1px solid #ccc;
+    border-radius: 18px;
+    margin: 90px auto 0;
+}
+
+.QuickSrch input[type=text] {
+    float: left;
+    width: 203px;
+    height: 27px;
+    padding: 0 5px;
+    border: 0;
+    line-height: 27px;
+}
+
+.QuickSrch button{
+    float: right;
+    margin-top: 6px;
+    margin-right: 6px;
+    border: 0;
+    width: 16px;
+    height: 16px;
+    background: #fff;
+}
+
+.Boardlist{
+	border: 0px solid gray; 
+	position: absolute;
+	font-family: 'Cute Font';
+}
+
+.BoardContent{
+	border: 1px solid gray;
+	margin-top: 100px;
+	margin-left: 200px;
+	margin-right: 250px;
+}
+
+.Pagination{
+    padding-left: 300px;
+    margin: 20px 0;
+    border-radius: 4px;
+    list-style:none;
+}
+
+.Pagination li{
+	float: left;
+}
+
+.Boardlist{
+	margin-left: 250px;
+}
+
+.BoardUpdate{
+	border: 1px solid gray;
+	height: 300px;
+	width: 400px;
+	margin-top: 100px;
+	margin-left: 200px;
+	margin-right: 250px;
+	height: 300px;
+}
+

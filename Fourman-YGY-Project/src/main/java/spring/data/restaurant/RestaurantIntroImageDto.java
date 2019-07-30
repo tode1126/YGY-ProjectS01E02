@@ -1,5 +1,9 @@
 package spring.data.restaurant;
 
+import java.util.ArrayList;
+
+import org.springframework.web.multipart.MultipartFile;
+
 public class RestaurantIntroImageDto {
 	private int restaurant_intro_image_pk;
 	private int restaurant_rest_pk;
@@ -7,6 +11,8 @@ public class RestaurantIntroImageDto {
 	private String restaurant_intro_image_realpath;
 	private int restaurant_intro_image_size;
 	private String restaurant_intro_image_realname;
+	private int restaurant_intro_priority;
+	private ArrayList<MultipartFile> upfile;
 	
 	public int getRestaurant_intro_image_pk() {
 		return restaurant_intro_image_pk;
@@ -43,5 +49,17 @@ public class RestaurantIntroImageDto {
 	}
 	public void setRestaurant_intro_image_realname(String restaurant_intro_image_realname) {
 		this.restaurant_intro_image_realname = restaurant_intro_image_realname;
+	}
+	public int getRestaurant_intro_priority() {
+		return restaurant_intro_priority;
+	}
+	public void setRestaurant_intro_priority(int restaurant_intro_priority) {
+		this.restaurant_intro_priority = restaurant_intro_priority;
+	}
+	public ArrayList<MultipartFile> getUpfile() {
+		return upfile;
+	}
+	public void setUpfile(ArrayList<MultipartFile> upfile) {
+		this.upfile = upfile;
 	}
 }
