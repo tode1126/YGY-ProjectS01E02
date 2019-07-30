@@ -9,7 +9,7 @@
 <title>Insert title here</title>
 <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
 <c:set var="root" value="<%=request.getContextPath()%>"></c:set>
-<link rel="stylesheet" href="${root }/css/admin/allUserListStyle.css">
+<link rel="stylesheet" href="${root }/css/client/notice/noticemainStyle.css">
 <link rel="stylesheet" href="${root }/css/admin/notic_boardListStyle.css">
 <link rel="stylesheet" href="${root }/css/Ji_Button_style.css"/>
 </head>
