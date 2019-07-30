@@ -39,7 +39,7 @@
 <img src="${root}/image/LOGO.png" align="middle" class="logo">
 </a> --%>
 <div class="etc">
-	여기요
+
 </div>
 </body>
 </html>

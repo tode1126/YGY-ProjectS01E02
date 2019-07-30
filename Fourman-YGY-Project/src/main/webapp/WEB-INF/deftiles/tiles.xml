@@ -28,7 +28,7 @@
 	
 	    <put-attribute name="top" value="/WEB-INF/layout/top.jsp"/>
 	    <put-attribute name="topmenu" value="/WEB-INF/layout/topmenu.jsp"/>
-	    <put-attribute name="bottom" value="/WEB-INF/client/clientLayout/clientbottom.jsp"/>
+	    <put-attribute name="bottom" value="/WEB-INF/layout/bottom.jsp"/>
 	       
 		<put-attribute name="top2" value="/WEB-INF/client/clientLayout/clienttop2.jsp"/>
 		<put-attribute name="top3" value="/WEB-INF/client/clientLayout/clienttop3.jsp"/>		

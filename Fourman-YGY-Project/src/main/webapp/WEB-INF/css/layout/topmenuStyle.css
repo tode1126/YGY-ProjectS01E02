@@ -18,6 +18,7 @@ ul.menu li{
 ul.menu li a{
 	text-decoration: none;
 	color: black; 
+	font-size: 1.6em;
 }
 
 ul.menu li a:hover{
@@ -61,4 +62,30 @@ button.btn-topmenu:after{
 button.btn-topmenu:hover:before,button.btn-topmenu:hover:after{
   width:100%;
   transition:800ms ease all;
+}
+
+
+div.menu-btn-wrap{
+	position: absolute;
+	left: 50%;
+	margin-left: 240px;
+	transition: transformX(100%)
+}
+ul.menu-btn{
+	margin: 0 0;
+}
+ul.menu-btn li{
+	list-style: none;
+	display: inline;
+	cursor: pointer;
+	/* padding-right: 2rem; */
+}
+
+ul.menu-btn li a{
+	text-decoration: none;
+	color: black; 
+}
+
+ul.menu-btn li a:hover{
+	color: red; 
 }

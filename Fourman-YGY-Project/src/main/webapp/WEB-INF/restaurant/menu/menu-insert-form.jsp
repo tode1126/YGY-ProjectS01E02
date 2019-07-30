@@ -52,6 +52,9 @@
 				<button style="width: 100px;" type="submit">
 					저장하기
 				</button>
+				<button style="width: 100px;" type="button" onclick="history.go(-1)">
+					취소
+				</button>
 			</td>
 		</tr>
 	</table>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="restaurant">
+	<select id="is_restaurant_tableDbSelect" parameterType="int" resultType="int">
+		select count(*) from restaurant_table_db where restaurant_rest_pk = #{restaurant_rest_pk}
+	</select>
+	<insert id="restaurant_tableDbInsert" parameterType="rtdbdto">
+		insert into restaurant_table_db (restaurant_rest_pk, restaurant_table_status, restaurant_table_no, 
+			restaurant_table_pw, restaurant_table_res, restaurant_table_res_name) 
+			values (#{restaurant_rest_pk}, #{restaurant_table_status}, #{restaurant_table_no}, 
+			#{restaurant_table_pw}, #{restaurant_table_res}, #{restaurant_table_res_name})
+	</insert>
+	<delete id="restaurant_tableDbDelete" parameterType="int">
+		delete from restaurant_table_db where where restaurant_rest_pk = #{restaurant_rest_pk}
+	</delete>
+	<select id="restaurant_tableDbSelect" parameterType="int" resultType="rtdbdto">
+		select * from restaurant_table_db where restaurant_rest_pk = #{restaurant_rest_pk}
+	</select>
+</mapper>
