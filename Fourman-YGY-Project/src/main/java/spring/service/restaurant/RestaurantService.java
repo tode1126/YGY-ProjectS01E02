@@ -132,6 +132,5 @@ public class RestaurantService {
 	}
 	public void updateRestaurantAuthority(RestaurantAuthorityDto radto) {
 		radao.updateRestaurantAuthority(radto);
->>>>>>> refs/heads/Hong
 	}
 }

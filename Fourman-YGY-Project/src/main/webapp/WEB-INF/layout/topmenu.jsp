@@ -21,7 +21,7 @@
 		<li><button class="btn-topmenu" onclick="">중식</button></li>
 		<li><button class="btn-topmenu" onclick="">일식</button></li>
 		<li><button class="btn-topmenu" onclick="">남미음식</button></li>
-		<li><button class="btn-topmenu" onclick="location.href='${root }/reboard/reboardlist.do'">후기게시판</button></li>
+		<li><button class="btn-topmenu" onclick="location.href='${root }/reboard/reboardList.do'">후기게시판</button></li>
 	</ul>
 </div>
 <div class="menu-btn-wrap">
