@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %> 
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>     
+	pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -9,86 +9,159 @@
 <title>Insert title here</title>
 <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
 <c:set var="root" value="<%=request.getContextPath()%>"></c:set>
-<link rel="stylesheet" href="${root }/css/layout/reboardStyle.css"/>
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
 <link href="https://fonts.googleapis.com/css?family=Cute+Font" rel="stylesheet">
-
-<script type="text/javascript">
-	$(function() {
-		$("img.heart").hide();
-		$("span.reboard_happy").click(function() {
-			var num=$(this).attr("num")
-			//alert(num);
-			var n=$(this);
-			//하트이미지 나타났다가 사라지는 애니메이션
-			$(n).next().show('fast').animate({
-				"width":"+=20px"}).hide('fast');
-			
-			$.ajax({
-				type:'get',
-				url:"happy.aj",
-				data:{"num":num},
-				dataType:"json",
-				success:function(redata){	
-					console.log(redata.reboard_happy);
-					$(n).text(redata.reboard_happy);	 	
-				},
-				error:function(err){
-					alert("errorcode:"+err.status);//에러코드출력
-					//200: 응답페이지오류:chudata.jsp 문제
-					//404: 매핑오류거나 jsp 를 못찾거나
-					//500: 문법오류
-				}
-			});
-		});
-	});
-</script>
+<link rel="stylesheet" href="${root }/css/reboard/starRev.css" />
+<script type="text/javascript" src="${root }/js/reboard/reboardcontentJs.js"></script>
 </head>
 <body>
-<div class="BoardContent">
-	<table style="width: 500px; margin-left: 80px;" class="table table-boardered">
-		<tr>
-			<th>
-				${dto.reboard_subject}
-				<span style="margin-left: 300px; color: gray;">
-					<fmt:formatDate value="${dto.reboard_writedate}"
-						pattern="yyyy-MM-dd HH:mm"/>
-				</span>		
-			</th>
-		</tr>
-		<tr height="250">
-			<td valign="top">
-				작성자 : ${dto.user_info_nickname} (${dto.user_info_email})
-				<span style="margin-left: 280px; color: gray">
-				조회 ${dto.readcount}</span>
-				<br><br>
-				<span>별점 : ${dto.reboard_rating}</span>
-				<span style="margin-left: 300px;">좋아요
-  				<span style="color: red;font-weight: bold;cursor: pointer;"
-  					 class="reboard_happy" num="${dto.reboard_pk}">${dto.reboard_happy}</span>
-  					 <img src="../image/Seo_heart.png" width="30" class="heart"></span>
-  				<span style="margin-left: 5px;">싫어요 
-  				<span style="color: blue;font-weight: bold;cursor: pointer;"
-  					 class="Chu" num="${dto.reboard_pk}">${dto.reboard_unhappy}</span></span>	 
-				<span><pre style="height:200px; margin-top: 20px;">${dto.reboard_content}</pre></span>		
-			</td>
-		</tr>
-	</table>
-	<div style="margin-left: 170px; margin-bottom: 20px;"> 	
-		<button type="button" class="btn btn-info btn-sm" style="width: 80px"
-			onclick="location.href='reboardlist.do?pageNum=${pageNum}'">목록</button>
+	<div class="BoardContent">
+		<table>
+			<tr>
+				<td>${dto.reboard_subject} 
+				<span> <fmt:formatDate value="${dto.reboard_writedate}" pattern="yyyy-MM-dd HH:mm" /></span>
+				</td>
+			</tr>
+			<tr height="250">
+				<td valign="top">작성자 : ${dto.user_info_nickname}
+					(${dto.user_info_email}) 
+					<span> 조회 ${dto.readcount}</span>
+				<br>
+				<br> 
+				<span>별점 :</span>
+				<div class="StarRev">
+						<c:if test="${dto.reboard_rating eq 0.5 }">
+							<span class="StarR1 on">0.5</span>
+						</c:if>
+
+						<c:if test="${dto.reboard_rating eq 1.0 }">
+							<span class="StarR1 on">0.5</span>
+							<span class="StarR2 on">1.0</span>
+						</c:if>
+
+						<c:if test="${dto.reboard_rating eq 1.5 }">
+							<span class="StarR1 on">0.5</span>
+							<span class="StarR2 on">1.0</span>
+							<span class="StarR1 on">1.5</span>
+						</c:if>
+
+						<c:if test="${dto.reboard_rating eq 2.0 }">
+							<span class="StarR1 on">0.5</span>
+							<span class="StarR2 on">1.0</span>
+							<span class="StarR1 on">1.5</span>
+							<span class="StarR2 on">2.0</span>
+						</c:if>
+
+						<c:if test="${dto.reboard_rating eq 2.5 }">
+							<span class="StarR1 on">0.5</span>
+							<span class="StarR2 on">1.0</span>
+							<span class="StarR1 on">1.5</span>
+							<span class="StarR2 on">2.0</span>
+							<span class="StarR1 on">2.5</span>
+						</c:if>
+
+						<c:if test="${dto.reboard_rating eq 3.0 }">
+							<span class="StarR1 on">0.5</span>
+							<span class="StarR2 on">1.0</span>
+							<span class="StarR1 on">1.5</span>
+							<span class="StarR2 on">2.0</span>
+							<span class="StarR1 on">2.5</span>
+							<span class="StarR2 on">3.0</span>
+						</c:if>
+
+						<c:if test="${dto.reboard_rating eq 3.5 }">
+							<span class="StarR1 on">0.5</span>
+							<span class="StarR2 on">1.0</span>
+							<span class="StarR1 on">1.5</span>
+							<span class="StarR2 on">2.0</span>
+							<span class="StarR1 on">2.5</span>
+							<span class="StarR2 on">3.0</span>
+							<span class="StarR1 on">3.5</span>
+						</c:if>
+
+						<c:if test="${dto.reboard_rating eq 4.0 }">
+							<span class="StarR1 on">0.5</span>
+							<span class="StarR2 on">1.0</span>
+							<span class="StarR1 on">1.5</span>
+							<span class="StarR2 on">2.0</span>
+							<span class="StarR1 on">2.5</span>
+							<span class="StarR2 on">3.0</span>
+							<span class="StarR1 on">3.5</span>
+							<span class="StarR2 on">4.0</span>
+						</c:if>
+
+						<c:if test="${dto.reboard_rating eq 4.5 }">
+							<span class="StarR1 on">0.5</span>
+							<span class="StarR2 on">1.0</span>
+							<span class="StarR1 on">1.5</span>
+							<span class="StarR2 on">2.0</span>
+							<span class="StarR1 on">2.5</span>
+							<span class="StarR2 on">3.0</span>
+							<span class="StarR1 on">3.5</span>
+							<span class="StarR2 on">4.0</span>
+							<span class="StarR1 on">4.5</span>
+						</c:if>
+
+						<c:if test="${dto.reboard_rating eq 5.0 }">
+							<span class="StarR1 on">0.5</span>
+							<span class="StarR2 on">1.0</span>
+							<span class="StarR1 on">1.5</span>
+							<span class="StarR2 on">2.0</span>
+							<span class="StarR1 on">2.5</span>
+							<span class="StarR2 on">3.0</span>
+							<span class="StarR1 on">3.5</span>
+							<span class="StarR2 on">4.0</span>
+							<span class="StarR1 on">4.5</span>
+							<span class="StarR2 on">5.0</span>
+						</c:if>
+					</div> 
+				<span>좋아요 
+					<span class="reboard_happy" reboard_pk="${dto.reboard_pk}">${dto.reboard_happy}</span>
+				</span> 
+				<span>싫어요 
+					<span class="reboard_unhappy" reboard_pk="${dto.reboard_pk}">${dto.reboard_unhappy}</span>
+				</span>
+					<div>${dto.reboard_content}</div>
+				</td>
+			</tr>
+			<tr>
+				<td>
+				<c:if test="${ralist ne null }">
+						<c:forEach var="radto" items="${ralist }">
+							<b>${radto.answer_nickname}</b> 
+							<span style="color: gray;font-size: 10pt">
+							<fmt:formatDate value="${radto.answer_wrtieday }" pattern="yyyy-MM-dd HH:mm" /></span>
+							
+							<c:if test="${sessionScope.userLoginInfo ne null && sessionScope.userLoginInfo.nickname eq radto.answer_nickname  }">
+							&nbsp;&nbsp;
+							<a href="${root }/reboard/boardAnswerDelete.do?answer_pk=${radto.answer_pk }&pageNum=${param.pageNum}&reboard_reboard_pk=${radto.reboard_reboard_pk}">삭제</a>
+							</c:if>
+							<br> &nbsp;&nbsp;${radto.answer_content } <br>
+						</c:forEach>
+				</c:if>
+				<!-- 로그인한경우에만 -->
+				<c:if test="${sessionScope.userLoginInfo ne null }">
+					<form action="${root }/reboard/boardAnswerInsert.do" method="post">
+						<textarea name="answer_content"></textarea>
+						<!-- hidden -->
+						<input type="hidden" name="answer_nickname" value="${sessionScope.userLoginInfo.nickname }">
+						<input type="hidden" name="pageNum" value="${param.pageNum }">
+						<input type="hidden" name="reboard_reboard_pk" value="${dto.reboard_pk}">
+						<button type="submit">등록</button>
+					</form>
+				</c:if>
+				</td>
+			</tr>
+		</table>
+		<div>
+			<button type="button" onclick="location.href='reboardList.do?pageNum=${param.pageNum }'">목록</button>
+			<button type="button" onclick="location.href='reboardform.do?reboard_pk=${dto.reboard_pk}&groupno=${dto.groupno}&restep=${dto.restep}&relevel=${dto.relevel}&pageNum=${pageNum}'">답글</button>
 			
-		<button type="button" class="btn btn-danger btn-sm" style="width: 80px;"
-		  onclick="location.href='reboardform.do'">글쓰기</button>  
-		
-		<button type="button" class="btn btn-success btn-sm" style="width: 80px;"
-		  onclick="location.href='reboardupdate.do?num=${dto.reboard_pk}&pageNum=${pageNum}'">수정</button>
-		
-		<button type="button" class="btn btn-warning btn-sm" style="width: 80px;"
-		  onclick="location.href='delete.do?num=${dto.reboard_pk}&pageNum=${pageNum}'">삭제</button>  		
+			<c:if test="${dto.user_info_email eq sessionScope.userLoginInfo.user_Email }">
+			<button type="button" onclick="location.href='reboardListUpdateform.do?reboard_pk=${dto.reboard_pk}&pageNum=${param.pageNum }'">수정</button>
+			<button type="button" onclick="location.href='reboardListDelete.do?reboard_pk=${dto.reboard_pk}&pageNum=${param.pageNum }'">삭제</button>
+			</c:if>
+		</div>
 	</div>
-</div>
 
 </body>
 </html>

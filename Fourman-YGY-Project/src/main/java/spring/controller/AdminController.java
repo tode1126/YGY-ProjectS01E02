@@ -1,5 +1,6 @@
 package spring.controller;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -24,11 +25,15 @@ import org.springframework.web.servlet.ModelAndView;
 
 import spring.data.LoginDto;
 import spring.data.QnADto;
+import spring.data.ReboardDto;
+import spring.data.Reboard_AnswerDto;
 import spring.data.UserDto;
 import spring.data.UserSearchDto;
 import spring.data.noticeDto;
 import spring.data.restaurant.RestaurantDto;
 import spring.service.AdminService;
+import spring.service.ReboardService;
+import spring.service.Reboard_AnswerService;
 
 @Controller
 public class AdminController {
@@ -39,6 +44,13 @@ public class AdminController {
 	// 필요한 관리자서비스 가져오기 위해
 	@Autowired
 	private AdminService service;
+
+	// 원래 계획이었던 서비스만불러오는거.. 내가만들어서 내가 하네..
+	@Autowired
+	private ReboardService rservice;
+
+	@Autowired
+	private Reboard_AnswerService raservice;
 
 	// 유저관리
 	@RequestMapping("/admin/userManagement/{pageName}/userDisable.do")
@@ -1297,7 +1309,7 @@ public class AdminController {
 		HttpSession session = request.getSession();
 		LoginDto ldto = (LoginDto) session.getAttribute("userLoginInfo");
 		String go = "admin.tiles";
-		
+
 		if (ldto != null) {
 			if (service.adminCheck(ldto.getUser_Email()) > 0) {
 				dto.setQna_ref(ori_qna_pk);
@@ -1307,21 +1319,155 @@ public class AdminController {
 		}
 		return go;
 	}
-	
+
 	@RequestMapping("/admin/qna_boardManagement/qna_boardListReplyDelete.do")
-	public String qna_boardListReplyDelete(HttpServletRequest request, @RequestParam(defaultValue = "1") String pageNum, @RequestParam int qna_pk) {
+	public String qna_boardListReplyDelete(HttpServletRequest request, @RequestParam(defaultValue = "1") String pageNum,
+			@RequestParam int qna_pk) {
 		HttpSession session = request.getSession();
 		LoginDto ldto = (LoginDto) session.getAttribute("userLoginInfo");
 		String go = "admin.tiles";
-		
+
 		if (ldto != null) {
 			if (service.adminCheck(ldto.getUser_Email()) > 0) {
 				service.qna_boardListReplyDelete(qna_pk);
 				go = "redirect:/admin/qna_boardManagement/qna_boardList.do?pageNum=" + pageNum;
 			}
 		}
-		
+
 		return go;
 	}
 
+	// 리보드
+	@RequestMapping("/admin/reboardManagement/reboardList.do")
+	public ModelAndView reboardList(@RequestParam(value = "pageNum", defaultValue = "1") int currentPage) {
+		ModelAndView model = new ModelAndView();
+
+		if (rservice.reboardListTotalCount() > 0) {
+			int totalCount;// 전체갯수
+
+			int totalPage; // 총페이지
+			int startNum;// 각페이지의시작번호
+			int endNum;// 각페이지의끝번호
+			int startPage; // 블럭의 시작페이지
+			int endPage;// 블럭의 끝페이지
+			int no;// 출력할 시작번호
+			int perPage = 10;// 한페이지당 보여질 글의갯수
+			int perBlock = 5;// 한블럭당 보여질 페이지의 갯수
+
+			totalCount = rservice.reboardListTotalCount();
+			// 총페이지의 갯수
+			totalPage = totalCount / perPage + (totalCount % perPage > 0 ? 1 : 0);
+
+			// 존재하지않는페이지인경우
+			if (totalPage < currentPage)
+				currentPage = totalPage;
+
+			// 각 블럭의 시작페이지와 끝 페이지를 구한다
+			startPage = ((currentPage - 1) / perBlock) * perBlock + 1;
+			endPage = startPage + perBlock - 1;
+			// ex)13페이지있을경우 15까지 불러와버리므로
+			if (endPage > totalPage)
+				endPage = totalPage;
+
+			// 각페이지의 시작번호와 끝번호를 구한다
+			// perpage가 5일경우
+			// 1페이지 1, 5 3페이지 11, 15
+			startNum = (currentPage - 1) * perPage + 1;
+			endNum = startNum + perPage - 1;
+			if (endNum > totalCount)
+				endNum = totalCount;
+
+			// 각 페이지마다 출력할 시작번호
+			// 총페이지가 30일경우 1페이지는 30 2페이지는 25...
+			no = totalCount - (currentPage - 1) * perPage;
+
+			// 리스트 가져오기
+			List<ReboardDto> list = rservice.reboardList(perPage, (currentPage - 1) * perPage);
+
+			for (ReboardDto dto : list) {
+				dto.setAnswerCount(raservice.boardAnswerGetCount(dto.getReboard_pk()));
+			}
+
+			// 가져온 리스트 model에 저장
+			model.addObject("list", list);
+			model.addObject("totalCount", totalCount);
+			model.addObject("currentPage", currentPage);
+			model.addObject("startPage", startPage);
+			model.addObject("endPage", endPage);
+			model.addObject("no", no);
+			model.addObject("totalPage", totalPage);
+		}
+		model.setViewName("/admin/reboardManagement/reboardList");
+		return model;
+	}
+
+	@RequestMapping("/admin/reboardManagement/reboardListSelectContent.do")
+	public ModelAndView reboardListSelectContent(@RequestParam int reboard_pk,
+			@RequestParam(defaultValue = "1") String pageNum) {
+		ModelAndView model = new ModelAndView();
+		String go = "admin.tiles";
+		ReboardDto dto = new ReboardDto();
+		List<Reboard_AnswerDto> ralist = new ArrayList<Reboard_AnswerDto>();
+
+		if (rservice.reboardListSelectCount(reboard_pk) > 0) {
+			rservice.reboardListUpdateReadCount(reboard_pk);
+			dto = rservice.reboardListSelectContent(reboard_pk);
+			ralist = raservice.boardAnswerGetData(reboard_pk);
+			model.addObject("dto", dto);
+			model.addObject("ralist", ralist);
+			go = "/admin/reboardManagement/reboardcontent";
+		}
+
+		model.setViewName(go);
+		return model;
+	}
+
+	@RequestMapping("/admin/reboardManagement/reboardListDelete.do")
+	public String reboardListDelete(@RequestParam int reboard_pk,
+			@RequestParam(value = "pageNum", defaultValue = "1") int pageNum, HttpServletRequest request) {
+		HttpSession session = request.getSession();
+		LoginDto ldto = (LoginDto) session.getAttribute("userLoginInfo");
+		if (service.adminCheck(ldto.getUser_Email()) > 0) {
+			if (rservice.reboardListDeleteCount(rservice.reboardListSelectContent(reboard_pk).getGroupno()) == 1) {
+				rservice.reboardListDelete(reboard_pk);
+			} else {
+				rservice.reboardListDeleteUpdate(reboard_pk);
+			}
+		}
+		return "redirect:/admin/reboardManagement/reboardList.do?pageNum=" + pageNum;
+	}
+
+	@RequestMapping("/admin/reboardManagement/happy.do")
+	@ResponseBody
+	public Map<Object, Object> reboard_happy(@RequestBody String reboard_pk) {
+		int count = 0;
+		Map<Object, Object> map = new HashMap<Object, Object>();
+		rservice.reboardListHappyUpdate(Integer.parseInt(reboard_pk));
+		count = rservice.reboardListHappySelect(Integer.parseInt(reboard_pk));
+		map.put("cnt", count);
+		return map;
+	}
+
+	@RequestMapping("/admin/reboardManagement/unhappy.do")
+	@ResponseBody
+	public Map<Object, Object> reboard_unhappy(@RequestBody String reboard_pk) {
+		int count = 0;
+		Map<Object, Object> map = new HashMap<Object, Object>();
+		rservice.reboardListUnHappyUpdate(Integer.parseInt(reboard_pk));
+		count = rservice.reboardListUnHappySelect(Integer.parseInt(reboard_pk));
+		map.put("cnt", count);
+		return map;
+	}
+
+	@RequestMapping("/admin/reboardManagement/boardAnswerDelete.do")
+	public String boardAnswerDelete(HttpServletRequest request, @ModelAttribute Reboard_AnswerDto dto,
+			@RequestParam(value = "pageNum", defaultValue = "1") int pageNum) {
+		HttpSession session = request.getSession();
+		LoginDto ldto = (LoginDto) session.getAttribute("userLoginInfo");
+		if (service.adminCheck(ldto.getUser_Email()) > 0) {
+			raservice.boardAnswerDelete(dto.getAnswer_pk());
+		}
+		return "redirect:/admin/reboardManagement/reboardListSelectContent.do?reboard_pk=" + dto.getReboard_reboard_pk()
+				+ "&pageNum=" + pageNum;
+	}
 }

@@ -151,6 +151,7 @@ public class UserController {
 				LoginDto dto = new LoginDto();
 				dto.setUser_Email(email);
 				dto.setUser_grade(udto.getGrade());
+				dto.setNickname(service.userUpdateDataGet(email).getNickName());
 				LoginManager manager = new LoginManager();
 
 				if (udto.getGrade() == 1) {

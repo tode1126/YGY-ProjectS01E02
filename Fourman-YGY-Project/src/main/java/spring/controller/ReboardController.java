@@ -1,164 +1,244 @@
 package spring.controller;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import spring.data.ReboardDto;
+import spring.data.Reboard_AnswerDto;
 import spring.service.ReboardService;
-
+import spring.service.Reboard_AnswerService;
 
 @Controller
 public class ReboardController {
-	
+
 	@Autowired
 	private ReboardService service;
-	
-	@RequestMapping("/reboard/reboardlist.do")
-	public ModelAndView list(
-			@RequestParam(value="pageNum",defaultValue="1") int currentPage)
-	{
-		ModelAndView model=new ModelAndView();
-		int totalCount;
-		totalCount=service.getTotalCount();
-		//페이징 복사한거
-		//페이징처리에 필요한 변수들 선언
-		int totalPage; //총 페이지수
-		int startNum; //각페이지의시작번호
-		int endNum; //각페이지의끝번호
-		int startPage; //블럭의 시작페이지
-		int endPage; //블럭의 끝페이지
-		int no;//출력할 시작번호
-		int perPage=10;//한페이지당 보여질 글의갯수
-		int perBlock=10;//한블럭당 보여질 페이지의 갯수
 
-		//총페이수를 구한다
-		totalPage=totalCount/perPage+(totalCount%perPage>0?1:0);
+	@Autowired
+	private Reboard_AnswerService raservice;
 
-		//존재하지 않는 페이지일경우 마지막 페이지로 가기
-		if(currentPage>totalPage)
-			currentPage=totalPage;
+	@RequestMapping("/reboard/reboardList.do")
+	public ModelAndView reboardList(@RequestParam(value = "pageNum", defaultValue = "1") int currentPage) {
+		ModelAndView model = new ModelAndView();
 
-		//각 블럭의 시작페이지와 끝페이지를 구한다
-		//perBlock 이 5일경우
-		//예) 현재페이지가 3 일경우 시작페이지:1,끝페이지:5
-		//예) 현재페이지가 7 일경우 시작페이지:6,끝페이지:10
-		//예) 현재페이지가 11 일경우 시작페이지:11,끝페이지:15
-		startPage=(currentPage-1)/perBlock*perBlock+1;
-		endPage=startPage+perBlock-1;
-		//마지막 블럭은 끝페이지가 총 페이지수와 같아야함
-		if(endPage>totalPage)
-			endPage=totalPage;
+		if (service.reboardListTotalCount() > 0) {
+			int totalCount;// 전체갯수
 
-		//각 페이지의 시작번호와 끝번호를 구한다
-		//perPage 가 5일경우
-		//예) 1페이지 : 시작번호 : 1, 끝번호:5
-		//    3페이지 :           11        15
-		//startNum=(currentPage-1)*perPage+1;
-		startNum=(currentPage-1)*perPage;
-		endNum=startNum+perPage-1;
-		//마지막 페이지의 글번호 체크하기
-		if(endNum>totalCount)
-			endNum=totalCount;
+			int totalPage; // 총페이지
+			int startNum;// 각페이지의시작번호
+			int endNum;// 각페이지의끝번호
+			int startPage; // 블럭의 시작페이지
+			int endPage;// 블럭의 끝페이지
+			int no;// 출력할 시작번호
+			int perPage = 10;// 한페이지당 보여질 글의갯수
+			int perBlock = 5;// 한블럭당 보여질 페이지의 갯수
 
-		//각 페이지마다 출력할 시작번호
-		//총갯수가 30일경우 1페이지는 30,2페이지는 25....
-		no=totalCount-(currentPage-1)*perPage;		
+			totalCount = service.reboardListTotalCount();
+			// 총페이지의 갯수
+			totalPage = totalCount / perPage + (totalCount % perPage > 0 ? 1 : 0);
 
-		//2. 리스트 가져오기
-		List<ReboardDto> list=service.getList(startNum, perBlock);
-		
-		//3. 페이징에 필요한 변수들 request에 저장		
-		model.addObject("list", list);
-		model.addObject("currentPage", currentPage);
-		model.addObject("startPage", startPage);
-		model.addObject("endPage", endPage);
-		model.addObject("no", no);
-		model.addObject("totalPage", totalPage);
-		
-		model.addObject("totalCount",totalCount);
-		model.setViewName("/main/reboard/reboardlist");	
+			// 존재하지않는페이지인경우
+			if (totalPage < currentPage)
+				currentPage = totalPage;
+
+			// 각 블럭의 시작페이지와 끝 페이지를 구한다
+			startPage = ((currentPage - 1) / perBlock) * perBlock + 1;
+			endPage = startPage + perBlock - 1;
+			// ex)13페이지있을경우 15까지 불러와버리므로
+			if (endPage > totalPage)
+				endPage = totalPage;
+
+			// 각페이지의 시작번호와 끝번호를 구한다
+			// perpage가 5일경우
+			// 1페이지 1, 5 3페이지 11, 15
+			startNum = (currentPage - 1) * perPage + 1;
+			endNum = startNum + perPage - 1;
+			if (endNum > totalCount)
+				endNum = totalCount;
+
+			// 각 페이지마다 출력할 시작번호
+			// 총페이지가 30일경우 1페이지는 30 2페이지는 25...
+			no = totalCount - (currentPage - 1) * perPage;
+
+			// 리스트 가져오기
+			List<ReboardDto> list = service.reboardList(perPage, (currentPage - 1) * perPage);
+			
+			for(ReboardDto dto : list)
+			{
+				dto.setAnswerCount(raservice.boardAnswerGetCount(dto.getReboard_pk()));
+			}
+
+			// 가져온 리스트 model에 저장
+			model.addObject("list", list);
+			model.addObject("totalCount", totalCount);
+			model.addObject("currentPage", currentPage);
+			model.addObject("startPage", startPage);
+			model.addObject("endPage", endPage);
+			model.addObject("no", no);
+			model.addObject("totalPage", totalPage);
+		}
+		model.setViewName("/main/reboard/reboardList");
+		return model;
+	}
+
+	@RequestMapping("/reboard/reboardInsert.do")
+	public String reboardListInsert(HttpServletRequest request, @RequestParam(defaultValue = "1") int pageNum) {
+
+		int reboard_pk, groupno, restep, relevel;
+		try {
+			reboard_pk = Integer.parseInt(request.getParameter("reboard_pk"));
+			groupno = Integer.parseInt(request.getParameter("groupno"));
+			restep = Integer.parseInt(request.getParameter("restep"));
+			relevel = Integer.parseInt(request.getParameter("relevel"));
+		} catch (NumberFormatException e) {
+			reboard_pk = groupno = restep = relevel = 0;
+		}
+
+		ReboardDto dto = new ReboardDto();
+		dto.setReboard_pk(reboard_pk);
+		dto.setGroupno(groupno);
+		dto.setRestep(restep);
+		dto.setRelevel(relevel);
+		dto.setUser_info_email(request.getParameter("user_info_email"));
+		dto.setUser_info_nickname(request.getParameter("user_info_nickname"));
+		dto.setReboard_subject(request.getParameter("reboard_subject"));
+		dto.setReboard_content(request.getParameter("reboard_content"));
+		dto.setReboard_rating(Float.parseFloat(request.getParameter("reboard_rating")));
+
+		service.reboardListInsert(dto);
+
+		return "redirect:/reboard/reboardList.do?pageNum=" + pageNum;
+	}
+
+	@RequestMapping("/reboard/reboardform.do")
+	public ModelAndView reboardform(@RequestParam(defaultValue = "1") int pageNum, HttpServletRequest request) {
+		ModelAndView model = new ModelAndView();
+
+		String reboard_pk = request.getParameter("reboard_pk");
+		String groupno = request.getParameter("groupno");
+		String restep = request.getParameter("restep");
+		String relevel = request.getParameter("relevel");
+
+		if (reboard_pk == null) {// 답글인경우
+			reboard_pk = "0";
+		}
+
+		model.addObject("groupno", groupno);
+		model.addObject("restep", restep);
+		model.addObject("relevel", relevel);
+		model.addObject("reboard_pk", reboard_pk);
+		model.addObject("pageNum", pageNum);
+		model.setViewName("/main/reboard/reboardform");
+		return model;
+	}
+
+	@RequestMapping("/reboard/reboardListSelectContent.do")
+	public ModelAndView reboardListSelectContent(@RequestParam int reboard_pk,
+			@RequestParam(defaultValue = "1") String pageNum) {
+		ModelAndView model = new ModelAndView();
+		String go = "main.tiles";
+		ReboardDto dto = new ReboardDto();
+		List<Reboard_AnswerDto> ralist = new ArrayList<Reboard_AnswerDto>();
+
+		if (service.reboardListSelectCount(reboard_pk) > 0) {
+			service.reboardListUpdateReadCount(reboard_pk);
+			dto = service.reboardListSelectContent(reboard_pk);
+			ralist = raservice.boardAnswerGetData(reboard_pk);
+			model.addObject("dto", dto);
+			model.addObject("ralist", ralist);
+			if(dto.getState() != 1)
+				go = "/main/reboard/reboardcontent";
+		}
+
+		model.setViewName(go);
 		return model;
 	}
 	
-	@RequestMapping("/reboard/reboardform.do")
-	public String form()
-	{
-		return "/main/reboard/reboardform";
-	}
-	
-	@RequestMapping(value="/reboard/write.do",method=RequestMethod.POST)
-	public String readData(@ModelAttribute ReboardDto dto )
-	{
-		service.insertReboard(dto);
-		return "redirect:/reboard/reboardlist.do";
-	}
-	
-	@RequestMapping("/reboard/content.do")
-	public String content(Model model, @RequestParam int num,
-			@RequestParam int pageNum)
-	{
-		//조회 1 증가
-		service.updateReadCount(num);
-		ReboardDto dto=service.getData(num);
+	@RequestMapping("/reboard/reboardListUpdateform.do")
+	public String reboardListUpdateForm(Model model, @RequestParam(defaultValue="1") int pageNum, @RequestParam int reboard_pk) {
+		
+		ReboardDto dto = service.reboardListSelectContent(reboard_pk);
 		
 		model.addAttribute("dto", dto);
 		model.addAttribute("pageNum", pageNum);
-		return "/main/reboard/reboardcontent";
-	}
-	
-	@RequestMapping("/reboard/reboardupdate.do")
-	public ModelAndView updateForm(@RequestParam int num,
-			@RequestParam int pageNum)
-	{
-		ModelAndView model=new ModelAndView();
-		ReboardDto dto=service.getData(num);
-		model.addObject("dto",dto);
-		model.addObject("pageNum",pageNum);
-		model.setViewName("/main/reboard/reboardupdate");
-		return model;
-	}
-	
-	@RequestMapping(value="/reboard/update.do",method=RequestMethod.POST)
-	public String update(@ModelAttribute ReboardDto dto,
-			@RequestParam String pageNum)
-	{
-		service.reboardUpdate(dto);
-		return "redirect:content.do?num="+dto.getReboard_pk()+"&pageNum="+pageNum;
-	}
-	
-	@RequestMapping("/reboard/delete.do")
-	public String delete(@RequestParam int num,
-			@RequestParam String pageNum)
-	{
-		service.reboardDelete(num);
-		return "redirect:reboardlist.do?pageNum="+pageNum;
-	}
-	
-	@RequestMapping("/reboard/happy.aj")
-	public @ResponseBody String reboard_happy(@RequestParam int num,Model model)
-	{
-		//System.out.println("happy num="+num);
-		service.reboardHappyUpdate(num);
-		int reboard_happy=service.getSelectHappy(num);
-		System.out.println("reboard_happy: "+reboard_happy);
 		
-//		ModelAndView model=new ModelAndView();
-//		model.addObject("reboard_happy",reboard_happy);
-//		model.setViewName("/main/reboard/happydata");
-		//model.addAttribute("reboard_happy", reboard_happy);
-		//return "/main/reboard/happydata";
-		//HashMap<String, Integer> map=new HashMap<String, Integer>();
-		//map.put("reboard_happy", reboard_happy);
-		return "{\"reboard_happy\":"+reboard_happy+"}";
+		return "/main/reboard/reboardupdate";
 	}
+
+	
+	@RequestMapping("/reboard/reboardListUpdate.do")
+	public String reboardListUpdate(HttpServletRequest request) {
+		ReboardDto dto = new ReboardDto();
+		//입력자료 읽기
+		int reboard_pk=0;
+		try {
+			reboard_pk=Integer.parseInt(request.getParameter("reboard_pk"));
+		}catch(NumberFormatException e) {
+			System.out.println("num에러"+e.getMessage());
+		}
+		String reboard_subject=request.getParameter("reboard_subject");
+		String reboard_content=request.getParameter("reboard_content");
+		float reboard_rating=Float.parseFloat(request.getParameter("reboard_rating"));
+
+		
+		if(reboard_pk>0)
+			dto = service.reboardListSelectContent(reboard_pk);
+		
+		dto.setReboard_subject(reboard_subject);
+		dto.setReboard_content(reboard_content);
+		dto.setReboard_rating(reboard_rating);
+
+		//update
+		service.reboardListUpdate(dto);
+		
+		String pageNum=request.getParameter("pageNum");
+		return "redirect:/reboard/reboardListSelectContent.do?reboard_pk="+dto.getReboard_pk()+"&pageNum="+pageNum;
+	}
+
+	@RequestMapping("/reboard/reboardListDelete.do")
+	public String reboardListDelete(@RequestParam int reboard_pk,
+			@RequestParam(value = "pageNum", defaultValue = "1") int pageNum) {
+		if (service.reboardListDeleteCount(service.reboardListSelectContent(reboard_pk).getGroupno()) == 1) {
+			service.reboardListDelete(reboard_pk);
+		} else {
+			service.reboardListDeleteUpdate(reboard_pk);
+		}
+		return "redirect:/reboard/reboardList.do?pageNum=" + pageNum;
+	}
+
+	@RequestMapping("/reboard/happy.do")
+	@ResponseBody
+	public Map<Object, Object> reboard_happy(@RequestBody String reboard_pk) {
+		int count = 0;
+		Map<Object, Object> map = new HashMap<Object, Object>();
+		service.reboardListHappyUpdate(Integer.parseInt(reboard_pk));
+		count = service.reboardListHappySelect(Integer.parseInt(reboard_pk));
+		map.put("cnt", count);
+		return map;
+	}
+
+	@RequestMapping("/reboard/unhappy.do")
+	@ResponseBody
+	public Map<Object, Object> reboard_unhappy(@RequestBody String reboard_pk) {
+		int count = 0;
+		Map<Object, Object> map = new HashMap<Object, Object>();
+		service.reboardListUnHappyUpdate(Integer.parseInt(reboard_pk));
+		count = service.reboardListUnHappySelect(Integer.parseInt(reboard_pk));
+		map.put("cnt", count);
+		return map;
+	}
+
 }

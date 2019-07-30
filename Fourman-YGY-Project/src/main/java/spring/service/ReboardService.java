@@ -14,47 +14,66 @@ public class ReboardService {
 	@Autowired
 	private ReboardDao dao;
 	
-	public int getTotalCount() { return dao.getTotalCount(); }
-	 
-	public void insertReboard(ReboardDto dto)
-	{
-		 dao.insertReboard(dto);
-		 return;
+	public List<ReboardDto> reboardList(int perPage, int no){
+		return dao.reboardList(perPage, no);
 	}
 	
-	public List<ReboardDto> getList(int offset,int block)
-	{
-		return dao.getList(offset, block);
+	public int reboardListTotalCount() {
+		return dao.reboardListTotalCount();
 	}
 	
-	public void updateReadCount(int num)
-	{
-		dao.updateReadCount(num);
+	public void reboardListHappyUpdate(int reboard_pk) {
+		dao.reboardListHappyUpdate(reboard_pk);
+		return;
 	}
 	
-	public ReboardDto getData(int num)
-	{
-		return dao.getData(num);
+	public int reboardListHappySelect(int reboard_pk) {
+		return dao.reboardListHappySelect(reboard_pk);
 	}
 	
-	public void reboardUpdate(ReboardDto dto)
-	{
-		dao.reboardUpdate(dto);
+	public void reboardListUnHappyUpdate(int reboard_pk) {
+		dao.reboardListUnHappyUpdate(reboard_pk);
+		return;
 	}
 	
-	public void reboardDelete(int num)
-	{
-		dao.reboardDelete(num);
+	public int reboardListUnHappySelect(int reboard_pk) {
+		return dao.reboardListUnHappySelect(reboard_pk);
 	}
 	
-	public void reboardHappyUpdate(int num)
-	{
-		dao.reboardHappyUpdate(num);
+	public ReboardDto reboardListSelectContent(int reboard_pk) {
+		return dao.reboardListSelectContent(reboard_pk);
 	}
 	
-	public int getSelectHappy(int num)
-	{
-		return dao.getSelectHappy(num);
+	public int reboardListSelectCount(int reboard_pk) {
+		return dao.reboardListSelectCount(reboard_pk);
 	}
 	
+	public void reboardListInsert(ReboardDto dto) {
+		dao.reboardListInsert(dto);
+		return;
+	}
+	
+	public void reboardListUpdateReadCount(int reboard_pk) {
+		dao.reboardListUpdateReadCount(reboard_pk);
+		return;
+	}
+	
+	public void reboardListDelete(int reboard_pk) {
+		dao.reboardListDelete(reboard_pk);
+		return;
+	}
+	
+	public void reboardListDeleteUpdate(int reboard_pk) {
+		dao.reboardListDeleteUpdate(reboard_pk);
+		return;
+	}
+
+	public int reboardListDeleteCount(int groupno) {
+		return dao.reboardListDeleteCount(groupno);
+	}
+	
+	public void reboardListUpdate(ReboardDto dto) {
+		dao.reboardListUpdate(dto);
+		return;
+	}
 }

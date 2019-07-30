@@ -3,6 +3,7 @@ package spring.data;
 public class LoginDto {
 	private String user_Email;
 	private int user_grade;
+	private String nickname;
 
 	public String getUser_Email() {
 		return user_Email;
@@ -18,6 +19,14 @@ public class LoginDto {
 
 	public void setUser_grade(int user_grade) {
 		this.user_grade = user_grade;
+	}
+
+	public String getNickname() {
+		return nickname;
+	}
+
+	public void setNickname(String nickname) {
+		this.nickname = nickname;
 	}
 
 }

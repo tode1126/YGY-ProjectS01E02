@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="reboard_answer">
+	<insert id="boardAnswerInsert" parameterType="rbadto">
+		insert into reboard_answer(reboard_reboard_pk, answer_nickname, answer_content, answer_wrtieday) values (#{reboard_reboard_pk}, #{answer_nickname}, #{answer_content}, now())
+	</insert>
+	<select id="boardAnswerGetCount" parameterType="int" resultType="int">
+		select count(*) from reboard_answer where reboard_reboard_pk=#{reboard_reboard_pk}
+	</select>
+	<select id="boardAnswerGetData" parameterType="int" resultType="rbadto">
+		select * from reboard_answer where reboard_reboard_pk=#{reboard_reboard_pk} order by answer_pk desc
+	</select>
+	<delete id="boardAnswerDelete" parameterType="int">
+		delete from reboard_answer where answer_pk=#{answer_pk}
+	</delete>
+	<delete id="answerDeleteByNum" parameterType="int">
+		delete from reboard_answer where reboard_reboard_pk=#{reboard_reboard_pk}
+	</delete>
+</mapper>
