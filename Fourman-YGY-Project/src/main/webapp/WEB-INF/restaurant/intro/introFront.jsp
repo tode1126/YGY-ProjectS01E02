@@ -33,7 +33,7 @@
 			<br>
 		</c:if>
 	</c:forEach>
-	<a href="./introText">식당 소개 이미지 삭제하기</a> <br>
+	<a href="./introImageDeleteForm.do">식당 소개 이미지 삭제하기</a> <br>
 </div>
 </c:if>
 </body>

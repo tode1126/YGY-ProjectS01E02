@@ -13,5 +13,6 @@
 <a href="./menuFront.do">메뉴 화면 가기</a><br>
 <a href="./introFront.do">소개 화면 가기</a><br>
 <a href="./tableFront.do">테이블 화면 가기</a><br>
+<a href="./authorityCheck.do">권한 수정하기</a><br>
 </body>
 </html>

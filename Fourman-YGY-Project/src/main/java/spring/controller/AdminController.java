@@ -93,7 +93,6 @@ public class AdminController {
 				}
 			}
 		}
-
 		return "redirect:/admin/userManagement/" + pageName + ".do?pageNum=" + pageNum;
 	}
 

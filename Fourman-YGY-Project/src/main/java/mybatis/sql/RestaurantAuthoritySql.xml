@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="restaurant">
+	<select id="is_restaurant_authoritySelect" parameterType="int" resultType="int">
+		select count(*) from restaurant_authority where restaurant_rest_pk = #{restaurant_rest_pk}
+	</select>
+	<insert id="restaurant_authorityInsert" parameterType="radto">
+		insert into restaurant_authority (restaurant_rest_pk, restaurant_authority_res, 
+			restaurant_authority_res_time, restaurant_authority_order, restaurant_authority_pay) 
+			values (#{restaurant_rest_pk}, #{restaurant_authority_res}, 
+			#{restaurant_authority_res_time}, #{restaurant_authority_order}, #{restaurant_authority_pay})
+	</insert>
+	<select id="restaurant_authoritySelect" parameterType="int" resultType="radto">
+		select * from restaurant_authority where restaurant_rest_pk = #{restaurant_rest_pk}
+	</select>
+	<update id="restaurant_authorityUpdate" parameterType="radto">
+		update restaurant_authority set restaurant_authority_res = #{restaurant_authority_res}, 
+			restaurant_authority_res_time = #{restaurant_authority_res_time}, 
+			restaurant_authority_order = #{restaurant_authority_order}, 
+			restaurant_authority_pay = #{restaurant_authority_pay} 
+			where restaurant_rest_pk = #{restaurant_rest_pk}
+	</update>
+</mapper>

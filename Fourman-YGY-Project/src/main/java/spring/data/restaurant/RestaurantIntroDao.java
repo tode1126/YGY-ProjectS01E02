@@ -31,4 +31,7 @@ public class RestaurantIntroDao extends SqlSessionDaoSupport {
 	public int selectRestaurantIntroImageMaxPriority (int restaurant_rest_pk) {
 		return getSqlSession().selectOne("restaurant_intro_imageMaxPrioritySelect", restaurant_rest_pk);
 	}
+	public void deleteRestaurantIntroImage(int restaurant_intro_image_pk) {
+		getSqlSession().delete("restaurant_intro_imageDelete", restaurant_intro_image_pk);
+	}
 }

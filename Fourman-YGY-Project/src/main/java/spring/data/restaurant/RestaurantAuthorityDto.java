@@ -1,4 +1,4 @@
-package restaurantMain;
+package spring.data.restaurant;
 
 public class RestaurantAuthorityDto {
 	private int restaurant_rest_pk;

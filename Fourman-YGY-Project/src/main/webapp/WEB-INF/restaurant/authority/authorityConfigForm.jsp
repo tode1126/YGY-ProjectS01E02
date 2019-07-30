@@ -7,22 +7,26 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+<script src="../js/restaurant/authority/authorityConfigFormJs.js"></script>
 <title>Insert title here</title>
 </head>
 <body>
-<form action="menuAdd.do" method="post">
+<form action="authorityAdd.do" method="post">
 	<table border="1" style="width: 400px;">
 		<tr>
 			<th width="100">예약 가능 여부</th>
 			<td width="200">
-				<input type="radio" name="restaurant_authority_res" value="yes" /> 예약 가능
-				<input type="radio" name="restaurant_authority_res" value="no" /> 예약 불가능
+				<input type="radio" class="authority-res authority-res-yes"  name="restaurant_authority_res" 
+					value="yes" /> 예약 가능
+				<input type="radio" class="authority-res authority-res-no"  name="restaurant_authority_res" 
+					value="no" /> 예약 불가능
 			</td>
 		</tr>
 		<tr>
 			<th>예약 유예 시간</th>
 			<td>
-				<input type="text" name="restaurant_authority_res_time" placeholder="60분 이내로 숫자만 적어주세요" value="15">
+				<input type="text" class="authority-res-time" name="restaurant_authority_res_time" 
+					placeholder="60분 이내로 숫자만 적어주세요" value="">
 			</td>
 		</tr>
 		<tr>

@@ -5,6 +5,8 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import spring.data.restaurant.RestaurantAuthorityDao;
+import spring.data.restaurant.RestaurantAuthorityDto;
 import spring.data.restaurant.RestaurantDao;
 import spring.data.restaurant.RestaurantDto;
 import spring.data.restaurant.RestaurantIntroDao;
@@ -24,6 +26,8 @@ public class RestaurantService {
 	private RestaurantTableDao rtdao;
 	@Autowired
 	private RestaurantIntroDao ridao;
+	@Autowired
+	private RestaurantAuthorityDao radao;
 	
 	/*** 식당 관련 서비스*/
 	public void insertRestaurant(RestaurantDto dto) {
@@ -90,5 +94,22 @@ public class RestaurantService {
 	}
 	public int selectRestaurantIntroImageMaxPriority (int restaurant_rest_pk) {
 		return ridao.selectRestaurantIntroImageMaxPriority(restaurant_rest_pk);
+	}
+	public void deleteRestaurantIntroImage(int restaurant_intro_image_pk) {
+		ridao.deleteRestaurantIntroImage(restaurant_intro_image_pk);
+	}
+	
+	/*** 식당 권한 설정 */
+	public int selectIsRestaurantAuthority(int restaurant_rest_pk) {
+		return radao.selectIsRestaurantAuthority(restaurant_rest_pk);
+	}
+	public void insertRestaurantAuthority(RestaurantAuthorityDto radto) {
+		radao.insertRestaurantAuthority(radto);
+	}
+	public RestaurantAuthorityDto selectRestaurantAuthority(int restaurant_rest_pk) {
+		return radao.selectRestaurantAuthority(restaurant_rest_pk);
+	}
+	public void updateRestaurantAuthority(RestaurantAuthorityDto radto) {
+		radao.updateRestaurantAuthority(radto);
 	}
 }

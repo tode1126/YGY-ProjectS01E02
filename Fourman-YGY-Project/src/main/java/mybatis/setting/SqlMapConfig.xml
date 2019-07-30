@@ -13,6 +13,7 @@ PUBLIC "-//mybatis.org// DTD Config 3.0//EN"
 		<typeAlias type="spring.data.restaurant.RestaurantTableDto" alias="rtdto"/>
 		<typeAlias type="spring.data.restaurant.RestaurantIntroDto" alias="ridto"/>
 		<typeAlias type="spring.data.restaurant.RestaurantIntroImageDto" alias="riimgdto"/>
+		<typeAlias type="spring.data.restaurant.RestaurantAuthorityDto" alias="radto"/>
 	</typeAliases>
 	<mappers>
 		<mapper resource="mybatis/sql/ReboardSql.xml"/>
@@ -22,5 +23,6 @@ PUBLIC "-//mybatis.org// DTD Config 3.0//EN"
 		<mapper resource="mybatis/sql/RestaurantSql.xml"/>
 		<mapper resource="mybatis/sql/RestaurantMenuSql.xml"/>
 		<mapper resource="mybatis/sql/RestaurantIntroSql.xml"/>
+		<mapper resource="mybatis/sql/RestaurantAuthoritySql.xml"/>
 	</mappers>
 </configuration>

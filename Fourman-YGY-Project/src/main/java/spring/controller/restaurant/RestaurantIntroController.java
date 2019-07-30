@@ -12,6 +12,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -295,15 +296,26 @@ public class RestaurantIntroController {
 	{
 		HttpSession session = request.getSession();
 		ModelAndView model = new ModelAndView();
+		List<RestaurantIntroImageDto> list = null;
 		boolean isRest_pk = (session.getAttribute("rest_pk")!=null) ? true : false;
 		if(isRest_pk) {
 			int restaurant_rest_pk = (Integer) session.getAttribute("rest_pk");
 			System.out.println("introImageDeleteForm: "+restaurant_rest_pk);
-			
+			list = service.selectListRestaurantIntroImage(restaurant_rest_pk);
 			model.addObject("rest_pk", restaurant_rest_pk);
+			model.addObject("list", list);
 		}
-		model.setViewName("/restaurant/intro/introImageAppendForm");
+		model.setViewName("/restaurant/intro/introImageDeleteForm");
 		return model;
+	}
+	@RequestMapping("/restaurant/introImageDelete.do")
+	public String introImageDelete(HttpServletRequest request,
+			@RequestParam(value="image_pk") int restaurant_intro_image_pk
+			)
+	{
+		System.out.println("introImageDelete: "+restaurant_intro_image_pk);
+		service.deleteRestaurantIntroImage(restaurant_intro_image_pk);
+		return "redirect:/restaurant/introFront.do";
 	}
 	
 	

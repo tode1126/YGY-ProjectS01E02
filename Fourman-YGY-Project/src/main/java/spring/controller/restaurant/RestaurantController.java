@@ -19,6 +19,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import spring.data.LoginDto;
+import spring.data.restaurant.RestaurantAuthorityDto;
 import spring.data.restaurant.RestaurantDto;
 import spring.data.restaurant.RestaurantMenuDto;
 import spring.service.restaurant.RestaurantService;
@@ -345,6 +346,26 @@ public class RestaurantController {
 	}
 	
 	/*** 식당 권한 테이블 설정*/
+	@RequestMapping("/restaurant/authorityCheck.do")
+	public String authorityConfigCheck(HttpServletRequest request)
+	{
+		HttpSession session = request.getSession();
+		String go = "";
+		int restaurant_rest_pk = -1;
+		boolean isRest_pk = (session.getAttribute("rest_pk")!=null) ? true : false;
+		if(isRest_pk) {
+			restaurant_rest_pk = (Integer) session.getAttribute("rest_pk");
+			System.out.println("authorityForm.do: "+restaurant_rest_pk);
+		}
+		int isRestaurantAuthority = service.selectIsRestaurantAuthority(restaurant_rest_pk);
+		if(isRestaurantAuthority==0) {
+			go = "redirect:/restaurant/authorityForm.do";
+		} else {
+			go = "redirect:/restaurant/authorityUpdateForm.do";
+		}
+		return go;
+	}
+	
 	@RequestMapping("/restaurant/authorityForm.do")
 	public ModelAndView authorityConfigForm(HttpServletRequest request)
 	{
@@ -360,12 +381,34 @@ public class RestaurantController {
 		return model;
 	}
 	@RequestMapping(value="/restaurant/authorityAdd.do", method=RequestMethod.POST)
-	public String authorityConfigAdd(@ModelAttribute RestaurantDto dto) {
-		
+	public String authorityConfigAdd(@ModelAttribute RestaurantAuthorityDto radto) {
+		service.insertRestaurantAuthority(radto);
 		//목록으로 이동
-		return "redirect:/restaurant/restaurantMain.do";
+		return "redirect:/restaurant/restaurantMain.do?select=" + radto.getRestaurant_rest_pk();
 	}
 	
+	@RequestMapping("/restaurant/authorityUpdateForm.do")
+	public ModelAndView authorityConfigUpdateForm(HttpServletRequest request)
+	{
+		HttpSession session = request.getSession();
+		RestaurantAuthorityDto radto = null;
+		ModelAndView model = new ModelAndView();
+		boolean isRest_pk = (session.getAttribute("rest_pk")!=null) ? true : false;
+		if(isRest_pk) {
+			int restaurant_rest_pk = (Integer) session.getAttribute("rest_pk");
+			System.out.println("authorityUpdateForm.do: "+restaurant_rest_pk);
+			radto = service.selectRestaurantAuthority(restaurant_rest_pk);
+			model.addObject("radto", radto);
+		} 
+		model.setViewName("/restaurant/authority/authorityUpdateForm");
+		return model;
+	}
+	@RequestMapping(value="/restaurant/authorityUpdate.do", method=RequestMethod.POST)
+	public String authorityConfigUpdate(@ModelAttribute RestaurantAuthorityDto radto) {
+		service.updateRestaurantAuthority(radto);
+		//목록으로 이동
+		return "redirect:/restaurant/restaurantMain.do?select=" + radto.getRestaurant_rest_pk();
+	}
 	
 	/*** 테이블 관련 컨트롤러*/
 	@RequestMapping(value="/restaurant/tableFront.do")
@@ -386,5 +429,6 @@ public class RestaurantController {
 		model.setViewName("/restaurant/table/tableFront");
 		return model;
 	}
+	
 	
 }

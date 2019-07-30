@@ -23,7 +23,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 		select count(*) from restaurant_intro_image where restaurant_rest_pk = #{restaurant_rest_pk}
 	</select>
 	<select id="restaurant_intro_imageListByRestPkSelect" parameterType="int" resultType="riimgdto">
-		select * from restaurant_intro_image where restaurant_rest_pk = #{restaurant_rest_pk}
+		select * from restaurant_intro_image where restaurant_rest_pk = #{restaurant_rest_pk} order by restaurant_intro_priority asc
 	</select>
 	<update id="restaurant_introUpdate">
 		update restaurant_intro set intro_text = #{intro_text} where restaurant_rest_pk = #{restaurant_rest_pk}
@@ -31,4 +31,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	<select id="restaurant_intro_imageMaxPrioritySelect" parameterType="int" resultType="int">
 		select max(restaurant_intro_priority) from restaurant_intro_image where restaurant_rest_pk = #{restaurant_rest_pk}
 	</select>
+	<delete id="restaurant_intro_imageDelete" parameterType="int">
+		delete from restaurant_intro_image where restaurant_intro_image_pk = #{restaurant_intro_image_pk}	
+	</delete>
 </mapper>
