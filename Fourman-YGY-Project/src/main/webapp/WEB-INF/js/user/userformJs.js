@@ -79,7 +79,7 @@ function check(f) {
 	if (!emailRules.test(f.email.value)) {
 		f.email.value = '';
 		swal("Oops", "사용 불가능한 이메일 입니다. \n 다시작성해주세요", "error");
-		return false
+		return false;
 	}
 
 	var passwordRules = /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{6,20}$/;

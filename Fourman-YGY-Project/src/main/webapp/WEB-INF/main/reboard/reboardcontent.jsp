@@ -154,8 +154,9 @@
 		</table>
 		<div>
 			<button type="button" onclick="location.href='reboardList.do?pageNum=${param.pageNum }'">목록</button>
+			<c:if test="${sessionScope.userLoginInfo ne null }">
 			<button type="button" onclick="location.href='reboardform.do?reboard_pk=${dto.reboard_pk}&groupno=${dto.groupno}&restep=${dto.restep}&relevel=${dto.relevel}&pageNum=${pageNum}'">답글</button>
-			
+			</c:if>
 			<c:if test="${dto.user_info_email eq sessionScope.userLoginInfo.user_Email }">
 			<button type="button" onclick="location.href='reboardListUpdateform.do?reboard_pk=${dto.reboard_pk}&pageNum=${param.pageNum }'">수정</button>
 			<button type="button" onclick="location.href='reboardListDelete.do?reboard_pk=${dto.reboard_pk}&pageNum=${param.pageNum }'">삭제</button>

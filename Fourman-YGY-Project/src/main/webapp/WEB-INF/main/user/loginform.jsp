@@ -6,13 +6,15 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+<c:set var="root" value="<%=request.getContextPath()%>"></c:set>
+<link rel="stylesheet" href="${root }/css/user/loginformStyle.css">
 <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/2.1.3/TweenMax.min.js"></script>
 <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
-<c:set var="root" value="<%=request.getContextPath()%>"></c:set>
-<link rel="stylesheet" href="${root }/css/user/loginformStyle.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script type="text/javascript" src="${root }/js/user/userCheckJs.js"></script>
 <script type="text/javascript" src="${root }/js/user/sha-256.js"></script>
+<script src='https://www.google.com/recaptcha/api.js'></script>
 </head>
 <c:if test="${not empty sessionScope.userLoginInfo}">
 <script type="text/javascript">
@@ -22,7 +24,7 @@
 <c:if test="${empty sessionScope.userLoginInfo}">
 	<body>
 	<div class="login">
-		<form class="loginform" method="post" action="loginAction.do" onsubmit="passChange(this)">
+		<form class="loginform" method="post" action="loginAction.do" onsubmit="return passChange(this)">
 			<div class="svgContainer">
 				<div>
 					<svg class="mySVG" xmlns="http://www.w3.org/2000/svg"
@@ -178,6 +180,7 @@
 				<label for="password">Password</label> <input type="password"
 					id="password" name="password" class="password" />
 			</div>
+			<div class="g-recaptcha" data-sitekey="6LeJerAUAAAAAKiTNKNhAb6lpS6oC4PgaVBBguHm"></div>
 			<div class="inputGroup inputGroup3">
 				<input type="hidden" name="hiddenPassword" id="hiddenPassword" value="">
 				<button id="login">Log in</button>

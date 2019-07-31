@@ -22,14 +22,33 @@ function getCoord(e) {
 	span.textContent = email.value.substr(carPos) || '.';
 	div.appendChild(span);
 	
-	emailCoords = getPosition(email);							//console.log("emailCoords.x: " + emailCoords.x + ", emailCoords.y: " + emailCoords.y);
-	caretCoords = getPosition(span);							//console.log("caretCoords.x " + caretCoords.x + ", caretCoords.y: " + caretCoords.y);
-	centerCoords = getPosition(mySVG);							//console.log("centerCoords.x: " + centerCoords.x);
+	emailCoords = getPosition(email);							// console.log("emailCoords.x:
+																// " +
+																// emailCoords.x
+																// + ",
+																// emailCoords.y:
+																// " +
+																// emailCoords.y);
+	caretCoords = getPosition(span);							// console.log("caretCoords.x
+																// " +
+																// caretCoords.x
+																// + ",
+																// caretCoords.y:
+																// " +
+																// caretCoords.y);
+	centerCoords = getPosition(mySVG);							// console.log("centerCoords.x:
+																// " +
+																// centerCoords.x);
 	svgCoords = getPosition(mySVG);
-	screenCenter = centerCoords.x + (mySVG.offsetWidth / 2);		//console.log("screenCenter: " + screenCenter);
-	caretPos = caretCoords.x + emailCoords.x;					//console.log("caretPos: " + caretPos);
+	screenCenter = centerCoords.x + (mySVG.offsetWidth / 2);		// console.log("screenCenter:
+																	// " +
+																	// screenCenter);
+	caretPos = caretCoords.x + emailCoords.x;					// console.log("caretPos:
+																// " +
+																// caretPos);
 	
-	dFromC = screenCenter - caretPos; 							//console.log("dFromC: " + dFromC);
+	dFromC = screenCenter - caretPos; 							// console.log("dFromC:
+																// " + dFromC);
 	var pFromC = Math.round((caretPos / screenCenter) * 100) / 100;
 	if(pFromC < 1) {
 		
@@ -179,7 +198,8 @@ function getPosition(el) {
 
 	while (el) {
 		if (el.tagName == "BODY") {
-			// deal with browser quirks with body/window/document and page scroll
+			// deal with browser quirks with body/window/document and page
+			// scroll
 			var xScroll = el.scrollLeft || document.documentElement.scrollLeft;
 			var yScroll = el.scrollTop || document.documentElement.scrollTop;
 
@@ -207,10 +227,68 @@ password.addEventListener('blur', onPasswordBlur);
 TweenMax.set(armL, {x: -93, y: 220, rotation: 105, transformOrigin: "top left"});
 TweenMax.set(armR, {x: -93, y: 220, rotation: -105, transformOrigin: "top right"});
  
- function passChange(f){
-	 f.hiddenPassword.value=SHA256(f.password.value);
- }
- 
- function loginFalse(){
+function loginFalse(){
 	 swal("Oops", "이메일 혹은 비밀번호가 틀렸습니다 \n 다시시도해주세요", "error");
+}
+
+
+function getContextPath() {
+		var hostIndex = location.href.indexOf(location.host) + location.host.length;
+		return location.href.substring(hostIndex, location.href.indexOf('/',
+				hostIndex));
+	}
+
+ 
+ function passChange(f){
+	 
+	 f.hiddenPassword.value=SHA256(f.password.value);
+	 
+	 var capcha = 0;
+	 var path ="";
+	 path= getContextPath();
+	 path = path+"/main/user/recapcha.do";
+	 
+	   $.ajax({
+	    	 async: false,
+	         url: path,
+	         type: 'post',
+	         data: {
+	             recaptcha: $("#g-recaptcha-response").val()
+	         },
+	         success: function(data) {
+	             switch (data) {
+	                 case 0:
+	                     // alert("자동 가입 방지 봇 통과");
+	                     capcha = 1;
+	                     console.log("1");
+	                     break;
+
+	                 case 1:
+	                     // alert("자동 가입 방지 봇을 확인 한뒤 진행 해 주세요.");
+	                	 capcha = 0;
+	                	 console.log("0");
+	                     break;
+
+	                 default:
+	                     // alert("자동 가입 방지 봇을 실행 하던 중 오류가 발생 했습니다. [Error bot
+							// Code : " + Number(data) + "]");
+	                     capcha = 0;
+	                 	 console.log("0");
+	                	 break;
+	             }
+	         }
+	     });
+	 
+
+	 
+  
+     
+     if(capcha == 1)
+    	 return true;
+	 
+     swal("Oops", "캡챠 확인을 진행해주세요", "error");
+	 return false;
  }
+
+
+ 

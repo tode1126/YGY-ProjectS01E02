@@ -108,11 +108,11 @@ public class RestaurantIntroController {
 			System.out.println("menuAddForm.do: "+restaurant_rest_pk);
 		}
 		
-		//String Path="/home/hosting_users/tjdrn4765/tomcat/webapps/ROOT/save/restaurant/intro/"+restaurant_rest_pk
-		String path = request.getSession().getServletContext().getRealPath("/save/restaurant/intro/"+restaurant_rest_pk);
+		String Path="/home/hosting_users/tjdrn4765/tomcat/webapps/ROOT/save/restaurant/intro/"+restaurant_rest_pk;
+		//String path = request.getSession().getServletContext().getRealPath("/save/restaurant/intro/"+restaurant_rest_pk);
 		//이미지 업로드 경로 확인하기
 		//식당 메뉴 업로드 경로 : /save/restaurant/menu/[식당고유값]/(이미지)
-		File folder = new File(path);
+		File folder = new File(Path);
 
 		// 해당 디렉토리가 없을경우 디렉토리를 생성합니다.
 		if (!folder.exists()) {
@@ -127,7 +127,7 @@ public class RestaurantIntroController {
 		}
 		
 		//이미지 업로드 경로
-		System.out.println(path);
+		System.out.println(Path);
 		SpringFileWriter fileWriter = new SpringFileWriter();
 		
 		String imagename = "";
@@ -150,10 +150,10 @@ public class RestaurantIntroController {
 				//fileExtension = fileExtension.substring(0, fileExtension.length());
 				realname = UUID.randomUUID().toString()+"."+fileExtension;
 				size = (int) f.getSize();
-				fileWriter.writeFile(f, path, realname);
+				fileWriter.writeFile(f, Path, realname);
 				riimgdto.setRestaurant_intro_image(imagename);
 				riimgdto.setRestaurant_intro_image_realname(realname);
-				riimgdto.setRestaurant_intro_image_realpath(path);
+				riimgdto.setRestaurant_intro_image_realpath(Path);
 				riimgdto.setRestaurant_intro_image_size(size);
 				riimgdto.setRestaurant_intro_priority(priority);
 			}

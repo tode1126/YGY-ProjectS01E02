@@ -1,5 +1,6 @@
 package spring.controller;
 
+import java.io.IOException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.context.request.RequestAttributes;
@@ -325,6 +327,24 @@ public class UserController {
 			SHA = null;
 		}
 		return SHA;
+	}
+
+	@ResponseBody
+	@RequestMapping(value="/main/user/recapcha.do" ,method = RequestMethod.POST)
+	public int VerifyRecaptcha(HttpServletRequest request) {
+		login.utill.VerifyRecaptcha.setSecretKey("6LeJerAUAAAAAJf4-fMjodlJFqWQOmaFm9Gi7DZ9");
+		String gRecaptchaResponse = request.getParameter("recaptcha");
+		System.out.println(gRecaptchaResponse);
+		// 0 = 성공, 1 = 실패, -1 = 오류
+		try {
+			if (login.utill.VerifyRecaptcha.verify(gRecaptchaResponse))
+				return 0;
+			else
+				return 1;
+		} catch (IOException e) {
+			e.printStackTrace();
+			return -1;
+		}
 	}
 
 }

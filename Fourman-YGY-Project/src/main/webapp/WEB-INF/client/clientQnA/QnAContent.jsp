@@ -13,12 +13,12 @@
 <link rel="stylesheet" href="${root }/css/admin/qna_boardListEditStyle.css">
 </head>
 <body>
-	<c:if test="${empty sessionScope.userLoginInfo or sessionScope.userLoginInfo.user_grade ne 3}">
+	<c:if test="${empty sessionScope.userLoginInfo }">
 		<script type="text/javascript">
 			adminCheck();
 		</script>
 	</c:if>
-	<c:if test="${not empty sessionScope.userLoginInfo and sessionScope.userLoginInfo.user_grade eq '3'}">
+	<c:if test="${not empty sessionScope.userLoginInfo }">
 		<div class="qnaEditLayer" >
 			<div class="qnaEdit" >
 				<form action="#" id="insertBoardFrm" method="post" >
